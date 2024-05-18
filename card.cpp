@@ -1,9 +1,9 @@
+//カードの集合のhash(rolling_hashの流用)
 const uint64_t rh_mod = 0x1FFFFFFFFFFFFFFF;
 const uint64_t rh_mask30 = 0x3FFFFFFF;
 const uint64_t rh_mask31 = 0x7FFFFFFF;
 const uint64_t rh_mask61 = rh_mod;
 uint64_t rh_base;
-vector<uint64_t> rh_base_pow;
 uint64_t rh_mul(uint64_t a, uint64_t b){
     uint64_t au = a >> 31;
     uint64_t ad = a & rh_mask31;
@@ -22,7 +22,8 @@ uint64_t rh_mul(uint64_t a, uint64_t b){
     return rtn;
 }
 
-void init_rh_base(int N){
+vector<uint64_t> rh_base_pow;
+void init_rh_base(int N = 128){
     rh_base = (uint64_t(1) << 32) + engine();
     rh_base_pow.resize(N);
     rh_base_pow[0] = 1;
@@ -75,7 +76,7 @@ struct word {
         rtn.digit = digit + other.digit;
         rtn.val = val * pow(bigint(10), other.digit) + other.val;
         rtn.hash = hash + other.hash;
-        if(rtn.hash >= rh_mod) rtn.hash - rh_mod;
+        if(rtn.hash >= rh_mod) rtn.hash -= rh_mod;
         return rtn;
     }
 };
