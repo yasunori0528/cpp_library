@@ -1,14 +1,3 @@
-#include <bits/stdc++.h>
-#include <gmp.h>
-#include <gmpxx.h>
-using namespace std;
-using bigint = mpz_class;
-
-#include "rand.cpp"
-#include "time.cpp"
-#include "math.cpp"
-#include "card.cpp"
-
 bool miller_rabin(bigint x){
     if(x <= 1) return false;
     if(x == 2) return true;

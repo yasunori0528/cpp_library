@@ -58,6 +58,10 @@ struct word {
         else if(c == 'J') val = 11;
         else if(c == 'Q') val = 12;
         else if(c == 'K') val = 13;
+        else if(c == 'X'){
+            val = 13;
+            //val = 0;
+        }
         else {
             cout << "!Wrong Argument" << endl;
             assert(false);
