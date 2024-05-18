@@ -6,6 +6,7 @@ using bigint = mpz_class;
 
 #include "rand.cpp"
 #include "time.cpp"
+#include "math.cpp"
 #include "card.cpp"
 
 int main(){
