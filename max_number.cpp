@@ -27,7 +27,20 @@ bigint hand_upper_bound(vector<string> v){
     return str_to_int(s);
 }
 
+map<bigint, vector<vector<string>>> pushed_state;
+
+bool pushed_strong_state(bigint x, vector<string> rest){
+    for(auto other_rest : pushed_state[x]){
+        sort(rest.begin(), rest.end());
+        sort(other_rest.begin(), other_rest.end());
+
+        ;
+    }
+    return true;
+}
+
 bool skip_calc(string s, bigint x, vector<string> rest){
+    if(pushed_strong_state(x, rest)) return true;
     string t = s;
     for(auto i : rest) t += i;
     for(char c : t) if(c == 'X') return false;
@@ -101,6 +114,7 @@ string max_number(vector<string> v){
                 bigint d_ub_rest = digit(ub_rest);
                 bigint next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
                 q.push({next_max_x, next_s, next_x, next_rest});
+                pushed_state[next_x].push_back(next_rest);
             }
         }
 
@@ -120,6 +134,7 @@ string max_number(vector<string> v){
                 mpz_class d_ub_rest = digit(ub_rest);
                 mpz_class next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
                 q.push({next_max_x, next_s, next_x, next_rest});
+                pushed_state[next_x].push_back(next_rest);
             }
         }
     }
