@@ -4,11 +4,11 @@
 using namespace std;
 using bigint = mpz_class;
 
-#include "pqk_lib/rand.cpp"
-#include "pqk_lib/time.cpp"
-#include "pqk_lib/math.cpp"
-#include "pqk_lib/miller_labin.cpp"
-#include "pqk_lib/card.cpp"
+#include "rand.cpp"
+#include "time.cpp"
+#include "math.cpp"
+#include "miller_labin.cpp"
+#include "card.cpp"
 
 bool number_test(bigint x){
     //return miller_rabin(x);
@@ -86,12 +86,6 @@ string max_number(vector<string> v){
         q.pop();
         if(max_val > max_x) break;
         if(skip_calc(s, x, rest)) continue;
-
-        if(engine()%100000 == 0){
-            cout << max_x << " " << s << " " << x << ",";
-            for(auto ii : rest) cout << " " << ii;
-            cout << endl;
-        }
         
         while(pushed_state.size()){
             bigint max_key = (*pushed_state.rbegin()).first;
@@ -143,8 +137,7 @@ string max_number(vector<string> v){
             next_rest.pop_back();
             sort(next_rest.begin(), next_rest.end());
 
-            //for(int j = 15 + 0; j <= 15 + 13; j++){
-            for(int j = 15 + 10; j <= 15 + 13; j++){//ジョーカーを絵札としてのみ使用
+            for(int j = 15 + 0; j <= 15 + 13; j++){
                 if(s.size() == 0 && j == 15) continue;
                 char c = alphabet[j];
                 if(checked.count(string(1, alphabet[j-15]))) continue;
@@ -180,6 +173,17 @@ int main(){
     int N; cin >> N;
     vector<string> v(N);
     for(auto &s : v) cin >> s;
+
+    for(auto s : v){
+        if(s.size() == 1) continue;
+        for(char c : s){
+            if(c == 'X'){
+                cout << "! " << s << " is invalid input" << endl;
+                assert(false);
+            }
+        }
+    }
+    
     auto time_start = get_time();
     string t = max_number(v);
     auto time_end = get_time();
