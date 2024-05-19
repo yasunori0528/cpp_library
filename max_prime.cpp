@@ -11,7 +11,10 @@ using bigint = mpz_class;
 #include "card.cpp"
 
 bool number_test(bigint x){
-    return miller_rabin(x);
+    //return miller_rabin(x);
+    x /= 10;
+    x *= 10;
+    return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);
 }
 
 bool max_nutural_sub(string s, string t){
@@ -30,6 +33,22 @@ bigint hand_upper_bound(vector<string> v){
 map<bigint, set<vector<string>>> pushed_state;
 
 bool skip_calc(string s, bigint x, vector<string> rest){
+    if(s.size() >= 2){
+        string sr = s.substr(s.size() - 2);
+        bigint sr_int = str_to_int(sr);
+        if(10 <= sr_int && sr_int <= 13){
+            string s1;
+            if(sr_int == 10) s1 = "T";
+            else if(sr_int == 11) s1 = "J";
+            else if(sr_int == 12) s1 = "Q";
+            else s1 = "K";
+
+            for(auto resti : rest){
+                if(resti == s1) return true;
+            }
+        }
+    }
+    
     string t = s;
     for(auto i : rest) t += i;
     for(char c : t) if(c == 'X') return false;
