@@ -10,79 +10,143 @@ using bigint = mpz_class;
 #include "miller_labin.cpp"
 #include "card.cpp"
 
-bool number_test(word x){
-    return miller_rabin(x.val);
+bool number_test(bigint x){
+    return miller_rabin(x);
 }
 
-bool max_nutural_sub(word s, word t){
-    return (s * t).val > (t * s).val;
+bool max_nutural_sub(string s, string t){
+    return str_to_int(s + t) > str_to_int(t + s);
 }
 
-word hand_upper_bound(vector<word> v){
+bigint hand_upper_bound(vector<string> v){
+    for(auto &vi : v) if(vi == "X") vi = "K";
+
     sort(v.begin(), v.end(), max_nutural_sub);
-    word s;
-    for(auto vi : v) s = s * vi;
-    return s;
+    string s;
+    for(auto vi : v) s += vi;
+    return str_to_int(s);
 }
 
-set<pair<uint64_t, bigint>> checked;
+bool skip_calc(string s, bigint x, vector<string> rest){
+    string t = s;
+    for(auto i : rest) t += i;
+    for(char c : t) if(c == 'X') return false;
 
-bool skip_calc(word w, vector<word> rest){
-    if(checked.count({w.hash, w.val})) return true;
+    bigint y = str_to_int(t);
+    if(y % 3 == 0) return true;
+
     if(rest.size() == 0) return false;
 
-    bool include_X = false;
     for(auto i : rest){
-        for(char c : i.str){
-            if(c == 'X') include_X = true;
-            break;
+        bigint z = str_to_int(i);
+        if(z%2 != 0 && z%5 != 0){
+            return false;
         }
-        if(include_X) break;
     }
-
-    if(!include_X){
-        bigint mod3 = w.val;
-        for(auto i : rest){
-            mod3 += i.val;
-        }
-        mod3 %= 3;
-        if(mod3 == 0) return true;
-    }
-
-
-    for(auto i : rest){
-        if(i.val%2 != 0 && i.val%5 != 0) return false;
-    }
-
     return true;
 }
 
-word max_number(vector<word> v){
-    if(v.size() == 0) return word();
-    if(v.size() == 1 && v[0].str == "X") return v[0];
+string max_number(vector<string> v){
+    if(v.size() == 0) return "-1";
+    if(v.size() == 1){
+        string s = v[0];
+        if(s == "X") return s;
+        if(number_test(str_to_int(s))) return s;
+        return "-1";
+    }
 
-    priority_queue<tuple<bigint, word, vector<word>>> q;
-    q.push({hand_upper_bound(v).val, word(), v});
-
-    word rtn;
+    priority_queue<tuple<bigint, string, bigint, vector<string>>> q;
+    q.push({hand_upper_bound(v), "", 0, v});
+    
+    string rtn = "-1";
+    bigint max_val = 0;
     while(q.size()){
-        auto[max_x, w, rest] = q.top();
+        auto[max_x, s, x, rest] = q.top();
         q.pop();
+        if(max_val > max_x) break;
+        if(skip_calc(s, x, rest)) continue;
 
-        if(max_x < rtn.val) break;
+        /*cout << max_x << " " << s << " " << x << ",";
+        for(auto ii : rest) cout << " " << ii;
+        cout << endl;*/
 
         if(rest.size() == 0){
-            if(w.val > rtn.val && number_test(w)){
-                rtn = w;
+            if(x > max_val && number_test(x)){
+                rtn = s;
+                max_val = x;
             }
             continue;
         }
 
         int rest_sz = rest.size();
         set<string> checked;
+        int exist_x = -1;
+        for(int i = 0; i < rest_sz; i++){
+            string t = rest[i];
+            if(checked.count(t)) continue;
+            checked.insert(t);
+
+            if(t == "X"){
+                exist_x = i;
+                continue;
+            }
+            else{
+                string next_s = s + t;
+                bigint next_x = str_to_int(next_s);
+                auto next_rest = rest;
+                swap(next_rest[i], next_rest[rest_sz - 1]);
+                next_rest.pop_back();
+
+                bigint ub_rest = hand_upper_bound(next_rest);
+                bigint d_ub_rest = digit(ub_rest);
+                bigint next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
+                q.push({next_max_x, next_s, next_x, next_rest});
+            }
+        }
+
+        if(exist_x >= 0){
+            int i = exist_x;
+            auto next_rest = rest;
+            swap(next_rest[i], next_rest[rest_sz - 1]);
+            next_rest.pop_back();
+            for(int j = 15; j <= 28; j++){
+                if(s.size() == 0 && j == 15) continue;
+                char c = alphabet[j];
+                if(checked.count(string(1, alphabet[j-15]))) continue;
+                string next_s = s + c;
+                mpz_class next_x = str_to_int(next_s);
+
+                mpz_class ub_rest = hand_upper_bound(next_rest);
+                mpz_class d_ub_rest = digit(ub_rest);
+                mpz_class next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
+                q.push({next_max_x, next_s, next_x, next_rest});
+            }
+        }
     }
+    return rtn;
+}
+
+void output_assigned_x(string s){
+    string assigned_list;
+    for(char &c : s){
+        if('a' <= c && c <= 'n'){
+            assigned_list.push_back(alphabet[char_to_int(c)]);
+            c = 'X';
+        }
+    }
+    cout << s;
+    for(char c : assigned_list) cout << " | X = " << c;
+    cout << endl; 
 }
 
 int main(){
-    ;
+    int N; cin >> N;
+    vector<string> v(N);
+    for(auto &s : v) cin >> s;
+    auto time_start = get_time();
+    string t = max_number(v);
+    auto time_end = get_time();
+    output_assigned_x(t);
+    cout << fixed << setprecision(3);
+    cout << (time_end - time_start) / 1e9 << "[s]" << endl;
 }

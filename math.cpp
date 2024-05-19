@@ -113,3 +113,9 @@ bigint pow_mod(bigint x, bigint y, bigint p){
 
     return pow_list[0].first;
 }
+
+int digit(bigint n){
+    if(n == 0) return 0;
+    if(n < 10) return 1;
+    else return digit(n/10)+1;
+}
