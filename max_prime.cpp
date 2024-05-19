@@ -87,9 +87,17 @@ string max_number(vector<string> v){
         if(max_val > max_x) break;
         if(skip_calc(s, x, rest)) continue;
 
-        /*cout << max_x << " " << s << " " << x << ",";
-        for(auto ii : rest) cout << " " << ii;
-        cout << endl;*/
+        if(engine()%100000 == 0){
+            cout << max_x << " " << s << " " << x << ",";
+            for(auto ii : rest) cout << " " << ii;
+            cout << endl;
+        }
+        
+        while(pushed_state.size()){
+            bigint max_key = (*pushed_state.rbegin()).first;
+            if(max_key > max_x) pushed_state.erase(max_key);
+            else break;
+        }
 
         if(rest.size() == 0){
             if(x > max_val && number_test(x)){
@@ -135,7 +143,8 @@ string max_number(vector<string> v){
             next_rest.pop_back();
             sort(next_rest.begin(), next_rest.end());
 
-            for(int j = 15; j <= 28; j++){
+            //for(int j = 15 + 0; j <= 15 + 13; j++){
+            for(int j = 15 + 10; j <= 15 + 13; j++){//ジョーカーを絵札としてのみ使用
                 if(s.size() == 0 && j == 15) continue;
                 char c = alphabet[j];
                 if(checked.count(string(1, alphabet[j-15]))) continue;
