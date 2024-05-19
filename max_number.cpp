@@ -27,20 +27,9 @@ bigint hand_upper_bound(vector<string> v){
     return str_to_int(s);
 }
 
-map<bigint, vector<vector<string>>> pushed_state;
-
-bool pushed_strong_state(bigint x, vector<string> rest){
-    for(auto other_rest : pushed_state[x]){
-        sort(rest.begin(), rest.end());
-        sort(other_rest.begin(), other_rest.end());
-
-        ;
-    }
-    return true;
-}
+map<bigint, set<vector<string>>> pushed_state;
 
 bool skip_calc(string s, bigint x, vector<string> rest){
-    if(pushed_strong_state(x, rest)) return true;
     string t = s;
     for(auto i : rest) t += i;
     for(char c : t) if(c == 'X') return false;
@@ -109,12 +98,14 @@ string max_number(vector<string> v){
                 auto next_rest = rest;
                 swap(next_rest[i], next_rest[rest_sz - 1]);
                 next_rest.pop_back();
+                sort(next_rest.begin(), next_rest.end());
+                if(pushed_state[next_x].count(next_rest)) continue;
 
                 bigint ub_rest = hand_upper_bound(next_rest);
                 bigint d_ub_rest = digit(ub_rest);
                 bigint next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
                 q.push({next_max_x, next_s, next_x, next_rest});
-                pushed_state[next_x].push_back(next_rest);
+                pushed_state[next_x].insert(next_rest);
             }
         }
 
@@ -123,18 +114,21 @@ string max_number(vector<string> v){
             auto next_rest = rest;
             swap(next_rest[i], next_rest[rest_sz - 1]);
             next_rest.pop_back();
+            sort(next_rest.begin(), next_rest.end());
+
             for(int j = 15; j <= 28; j++){
                 if(s.size() == 0 && j == 15) continue;
                 char c = alphabet[j];
                 if(checked.count(string(1, alphabet[j-15]))) continue;
                 string next_s = s + c;
                 mpz_class next_x = str_to_int(next_s);
+                if(pushed_state[next_x].count(next_rest)) continue;
 
                 mpz_class ub_rest = hand_upper_bound(next_rest);
                 mpz_class d_ub_rest = digit(ub_rest);
                 mpz_class next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
                 q.push({next_max_x, next_s, next_x, next_rest});
-                pushed_state[next_x].push_back(next_rest);
+                pushed_state[next_x].insert(next_rest);
             }
         }
     }
