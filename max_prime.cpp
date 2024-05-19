@@ -12,7 +12,7 @@ using bigint = mpz_class;
 
 bool number_test(bigint x){
     //return miller_rabin(x);
-    x /= 10;
+    //x /= 10;
     x *= 10;
     return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);
 }

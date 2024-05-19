@@ -183,7 +183,7 @@ int main(){
             }
         }
     }
-    
+
     auto time_start = get_time();
     string t = max_number(v);
     auto time_end = get_time();
