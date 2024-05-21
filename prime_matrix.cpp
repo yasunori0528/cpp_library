@@ -4,11 +4,7 @@
 using namespace std;
 using bigint = mpz_class;
 
-#include "rand.cpp"
-#include "time.cpp"
-#include "math.cpp"
-#include "miller_labin.cpp"
-#include "card.cpp"
+#include "pqk_lib/pqk_all.cpp"
 
 int main(){
     ;

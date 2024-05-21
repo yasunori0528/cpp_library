@@ -4,11 +4,7 @@
 using namespace std;
 using bigint = mpz_class;
 
-#include "pqk_lib/rand.cpp"
-#include "pqk_lib/time.cpp"
-#include "pqk_lib/math.cpp"
-#include "pqk_lib/miller_labin.cpp"
-#include "pqk_lib/card.cpp"
+#include "pqk_lib/pqk_all.cpp"
 
 bool number_test(bigint x){
     //return miller_rabin(x);
@@ -54,16 +50,16 @@ bool skip_calc(string s, bigint x, vector<string> rest){
     for(char c : t) if(c == 'X') return false;
 
     bigint y = str_to_int(t);
-    if(y % 3 == 0) return true;
+    if(y % 3 == 1) return false;
 
     if(rest.size() == 0) return false;
 
-    for(auto i : rest){
+    /*for(auto i : rest){
         bigint z = str_to_int(i);
         if(z%2 != 0 && z%5 != 0){
             return false;
         }
-    }
+    }*/
     return true;
 }
 
@@ -81,17 +77,20 @@ string max_number(vector<string> v){
     
     string rtn = "-1";
     bigint max_val = 0;
+    int64_t loop_cnt = 0;
     while(q.size()){
         auto[max_x, s, x, rest] = q.top();
         q.pop();
         if(max_val > max_x) break;
         if(skip_calc(s, x, rest)) continue;
 
-        if(engine()%100000 == 0){
+        if(loop_cnt%100000 == 0){
             cout << max_x << " " << s << " " << x << ",";
             for(auto ii : rest) cout << " " << ii;
             cout << endl;
         }
+        loop_cnt++;
+
         
         while(pushed_state.size()){
             bigint max_key = (*pushed_state.rbegin()).first;
