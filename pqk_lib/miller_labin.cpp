@@ -14,14 +14,14 @@ bool miller_rabin(bigint x){
     if(x - 1 < k) k = x - 1;
 
     set<bigint> A;
-
+    
     {
         bigint a_max = x - 1;
         while(A.size() < k){
             A.insert(engine() % a_max + 1);
         }
     }
-
+    //cout << "A" << endl;
     for(bigint a : A){
         bigint t = pow_mod(a, d, x);
         if(t == 1) continue;

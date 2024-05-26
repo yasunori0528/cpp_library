@@ -13,101 +13,100 @@ int num_card(bigint x){
     return num_card(x / 10) + 1;
 }
 
+int bigint_to_int(bigint x){
+    //cout << "-L" << endl;
+    //cout << x << " ";
+    int sz = 31;
+    vector<int> v;
+    for(int i = 0; i < sz; i++){
+        if(x % 2 == 0) v.push_back(0);
+        else v.push_back(1);
+        x /= 2;
+    }
+
+    int rtn = 0;
+    for(int i = sz - 1; i >= 0; i--) rtn = rtn * 2 + v[i];
+    //cout << rtn << endl;
+    //for(auto i : v) cout << i << " ";
+    //cout << endl;
+    //cout << "-R" << endl;
+    return rtn;
+}
+
+vector<int> int_to_comb(bigint x){
+    //cout << "L" << endl;
+    vector<int> rtn(18, 0);
+    int temp = 0;
+    while(x > 0){
+        int r = bigint_to_int(x % 10);
+        x /= 10;
+        if(r == 1){
+            if(temp == 11){
+                rtn[temp]++;
+                temp = 1;
+            }
+            else temp = temp * 10 + 1;
+        }
+        else if(r < 4){
+            temp = temp * 10 + r;
+            if(temp < 14) rtn[temp]++;
+            else{
+                //110 : 14, ... , 113 : 17
+                rtn[temp - 96]++;
+            }
+        }
+        else{
+            if(temp > 0) rtn[temp]++;
+            rtn[r]++;
+        }
+    }
+    //cout << "R" << endl;
+    return rtn;
+}
+
 void f1(){
-    vector<tuple<int,int64_t,int64_t>> V;
-    for(int i = 1; i < 100000000; i++){
-        string s = "4856" + to_string(i);
-        int64_t p = stoll(s);
-        int64_t n = p * 2;
-        string t = to_string(n);
-        if(miller_rabin(p)){
-            V.push_back({num_card(n), p, n});
+    //C = 7 * NM
+    //7 * M は繰り上がらない
+    vector<string> V;
+    for(int d = 1; d <= 3; d++){
+        vector<int> loop(d, 1);
+        bool b = true;
+        while(b){
+            string s;
+            for(int i = 0; i < d; i++) s.push_back(alphabet[loop[i]]);
+            bigint n = str_to_int(s);
+            if(n % 7 == 0) V.push_back(s);
+            b = false;
+            for(int i = 0; i < d; i++){
+                if(loop[i] < 13){
+                    loop[i]++;
+                    for(int j = 0; j < i; j++) loop[j] = 1;
+                    b = true;
+                    break;
+                }
+            }
         }
     }
 
-    cout << V.size() << endl;
-    for(auto[d, p, n] : V){
-        cout << p << " " << n << endl;
+    vector<tuple<string,string>> output_list;
+    for(string s : V){
+        for(string t : V){
+            bigint n = str_to_int(s + t);
+            bigint p = n / 7;
+            if(miller_rabin(p)){
+                output_list.push_back({s, t});
+            }
+        }
+    }
+
+    cout << output_list.size() << endl;
+    for(auto [s, t] : output_list){
+        cout << s << " " << t << endl;
     }
 }
 
 void f2(){
-    int N; cin >> N;
-    vector<tuple<int,int64_t,int64_t>> V(N);
-    for(auto &[d, p, n] : V) cin >> d >> p >> n;
-
-    vector<tuple<int,int64_t,int64_t>> W;
-    for(auto [d, p, n] : V){
-        map<string,int> mp;
-        mp["2"]++;
-        string s = to_string(p);
-        string t = to_string(n);
-        string temp;
-        for(char c : s){
-            if(c == '1') temp.push_back(c);
-            else{
-                if(c <= '3'){
-                    temp.push_back(c);
-                    mp[temp]++;
-                    temp.clear();
-                }
-                else{
-                    if(temp.size()){
-                        mp[temp]++;
-                        temp.clear();
-                    }
-                    mp[string(1, c)]++;
-                }
-            }
-        }
-        if(temp.size()){
-            mp[temp]++;
-            temp.clear();
-        }
-        for(char c : t){
-            if(c == '1') temp.push_back(c);
-            else{
-                if(c <= '3'){
-                    temp.push_back(c);
-                    mp[temp]++;
-                    temp.clear();
-                }
-                else{
-                    if(temp.size()){
-                        mp[temp]++;
-                        temp.clear();
-                    }
-                    mp[string(1, c)]++;
-                }
-            }
-        }
-        if(temp.size()){
-            mp[temp]++;
-            temp.clear();
-        }
-
-        bool b = true;
-        for(auto[k, v] : mp){
-            if(v >= 4) b = false;
-            if(k == "0" && v >= 1) b = false;
-            //if(k == "2" && v >= 2) b = false;
-        }
-
-        /*cout << s << endl;
-        cout << t << endl;
-        for(auto [k, v] : mp){
-            cout << k << " " << v << endl;
-        }
-        cout << endl;*/
-
-        if(b) W.push_back({d, p, n});
-    }
-
-    sort(W.begin(), W.end());
-    cout << W.size() << endl;
-    for(auto[d, p, n] : W){
-        cout << d << " " << p << " " << n << endl;
-    }
+    
 }
 
 int main(){
