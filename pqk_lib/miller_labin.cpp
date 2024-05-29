@@ -18,7 +18,7 @@ bool miller_rabin(bigint x){
     {
         bigint a_max = x - 1;
         while(A.size() < k){
-            A.insert(engine() % a_max + 1);
+            A.insert(rnd<uint>() % a_max + 1);
         }
     }
     //cout << "A" << endl;

@@ -33,12 +33,24 @@ int bigint_to_int(bigint x){
     return rtn;
 }
 
-vector<int> int_to_comb(bigint x){
-    //cout << "L" << endl;
-    vector<int> rtn(18, 0);
-    int temp = 0;
+string bigint_to_string(bigint x){
+    string s;
     while(x > 0){
-        int r = bigint_to_int(x % 10);
+        s.push_back('0' + bigint_to_int(x % 10));
+        x /= 10;
+    }
+    reverse(s.begin(), s.end());
+    return s;
+}
+
+vector<int> int_to_comb(bigint x){
+    //cout << x << " :";
+    vector<int> rtn(18, 0);
+    int temp = 0;//temp = 0, 1 or 11
+    string s = bigint_to_string(x);
+    for(char c : s){
+        //cout << "L" << endl;
+        int r = c - '0';
         x /= 10;
         if(r == 1){
             if(temp == 11){
@@ -54,13 +66,18 @@ vector<int> int_to_comb(bigint x){
                 //110 : 14, ... , 113 : 17
                 rtn[temp - 96]++;
             }
+            temp = 0;
         }
         else{
             if(temp > 0) rtn[temp]++;
             rtn[r]++;
+            temp = 0;
         }
+        //cout << "R" << endl;
     }
-    //cout << "R" << endl;
+    //for(auto i : rtn) cout << " " << i;
+    //cout << endl;
+    
     return rtn;
 }
 
@@ -88,25 +105,50 @@ void f1(){
         }
     }
 
-    vector<tuple<string,string>> output_list;
+    vector<tuple<int,int,string,string,bigint,bigint,bigint,vector<int>>> output_list;
     for(string s : V){
         for(string t : V){
             bigint n = str_to_int(s + t);
             bigint p = n / 7;
             if(miller_rabin(p)){
-                output_list.push_back({s, t});
+                vector<int> nc = int_to_comb(n);
+                vector<int> pc = int_to_comb(p);
+                vector<int> comb(18);
+                for(int i = 0; i < 18; i++) comb[i] = nc[i] + pc[i];
+                bool b = true;
+                for(int i = 0; i < 18; i++){
+                    if(i == 0 && comb[i] > 0) b = false;
+                    if(comb[i] > 4) b = false;
+                }
+                if(b) output_list.push_back({num_card(n), num_card(p), s, t, str_to_int(s), str_to_int(t), p, comb});
             }
         }
     }
 
-    cout << output_list.size() << endl;
-    for(auto [s, t] : output_list){
-        cout << s << " " << t << endl;
+    sort(output_list.begin(), output_list.end());
+    int sz = output_list.size();
+    cout << sz << endl;
+    for(int i = 0; i < sz; i++){
+        auto[nn, np, s, t, ss, tt, p, c] = output_list[i];
+        cout << nn << " " << np << " " << s << " " << t << " " << ss << " " << tt << " " << p;
+        for(auto j : c) cout << " " << j;
+        cout << endl;
     }
 }
 
 void f2(){
-    
+    int N; cin >> N;
+    vector<pair<string, string>> V(N);
+    for(auto &[s, t] : V) cin >> s >> t;
+
+    for(auto[s, t] : V){
+        bigint n = str_to_int(s + t);
+        bigint p = n / 7;
+        vector<int> nc = int_to_comb(n);
+        vector<int> pc = int_to_comb(p);
+        vector<int> comb(18);
+        for(int i = 0; i < 18; i++) comb[i] = nc[i] + pc[i];
+    }
 }
 
 int main(){
