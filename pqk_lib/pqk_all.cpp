@@ -2,4 +2,6 @@
 #include "time.cpp"
 #include "math.cpp"
 #include "miller_labin.cpp"
+#include "pollard_rho.cpp"
 #include "card.cpp"
+#include "max_prime.cpp"

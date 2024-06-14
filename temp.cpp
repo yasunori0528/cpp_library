@@ -43,114 +43,173 @@ string bigint_to_string(bigint x){
     return s;
 }
 
-vector<int> int_to_comb(bigint x){
-    //cout << x << " :";
-    vector<int> rtn(18, 0);
-    int temp = 0;//temp = 0, 1 or 11
-    string s = bigint_to_string(x);
-    for(char c : s){
-        //cout << "L" << endl;
-        int r = c - '0';
-        x /= 10;
-        if(r == 1){
-            if(temp == 11){
-                rtn[temp]++;
-                temp = 1;
-            }
-            else temp = temp * 10 + 1;
-        }
-        else if(r < 4){
-            temp = temp * 10 + r;
-            if(temp < 14) rtn[temp]++;
-            else{
-                //110 : 14, ... , 113 : 17
-                rtn[temp - 96]++;
-            }
-            temp = 0;
-        }
-        else{
-            if(temp > 0) rtn[temp]++;
-            rtn[r]++;
-            temp = 0;
-        }
-        //cout << "R" << endl;
+uint64_t str_to_comb(string s){
+    uint64_t rtn = 0;
+    for(auto c : s){
+        rtn += uint64_t(1) << (char_to_int(c) * 3);
     }
-    //for(auto i : rtn) cout << " " << i;
-    //cout << endl;
-    
     return rtn;
 }
 
-void f1(){
-    //C = 7 * NM
-    //7 * M は繰り上がらない
-    vector<string> V;
-    for(int d = 1; d <= 3; d++){
-        vector<int> loop(d, 1);
-        bool b = true;
-        while(b){
+void init_hand_list(int N, set<pair<string,int>> &H){
+    vector<int> loop(N+1, 1);
+    loop[N] = 14;
+    bool b = true;
+    while(b){
+        vector<int> a(15, 0);
+        for(int i = 0; i < N; i++) a[loop[i]]++;
+        bool b2 = true;
+        for(int i = 1; i <= 14; i++){
+            if(a[i] > 4) b2 = false;
+            if(a[i] > 2 && i == 14) b2 = false;
+        }
+
+        if(b2){
             string s;
-            for(int i = 0; i < d; i++) s.push_back(alphabet[loop[i]]);
-            bigint n = str_to_int(s);
-            if(n % 7 == 0) V.push_back(s);
-            b = false;
-            for(int i = 0; i < d; i++){
-                if(loop[i] < 13){
-                    loop[i]++;
-                    for(int j = 0; j < i; j++) loop[j] = 1;
-                    b = true;
-                    break;
+            for(int i = 0; i < N; i++) s.push_back(alphabet[loop[i]]);
+            int cnt = 1;
+            for(int i = 1; i <= 14; i++){
+                if(i < 14){
+                    if(a[i] == 1) cnt *= 4;
+                    else if(a[i] == 2) cnt *= 6;
+                    else if(a[i] == 3) cnt *= 4;
                 }
+                if(i == 14){
+                    if(a[i] == 1) cnt *= 2;
+                }
+            }
+            H.insert({s, cnt});
+        }
+
+        b = false;
+        for(int i = 0; i < N; i++){
+            if(loop[i] < loop[i+1]){
+                loop[i]++;
+                for(int j = 0; j < i; j++){
+                    loop[j] = 1;
+                }
+                b = true;
+                break;
             }
         }
     }
-
-    vector<tuple<int,int,string,string,bigint,bigint,bigint,vector<int>>> output_list;
-    for(string s : V){
-        for(string t : V){
-            bigint n = str_to_int(s + t);
-            bigint p = n / 7;
-            if(miller_rabin(p)){
-                vector<int> nc = int_to_comb(n);
-                vector<int> pc = int_to_comb(p);
-                vector<int> comb(18);
-                for(int i = 0; i < 18; i++) comb[i] = nc[i] + pc[i];
-                bool b = true;
-                for(int i = 0; i < 18; i++){
-                    if(i == 0 && comb[i] > 0) b = false;
-                    if(comb[i] > 4) b = false;
-                }
-                if(b) output_list.push_back({num_card(n), num_card(p), s, t, str_to_int(s), str_to_int(t), p, comb});
-            }
-        }
-    }
-
-    sort(output_list.begin(), output_list.end());
-    int sz = output_list.size();
-    cout << sz << endl;
-    for(int i = 0; i < sz; i++){
-        auto[nn, np, s, t, ss, tt, p, c] = output_list[i];
-        cout << nn << " " << np << " " << s << " " << t << " " << ss << " " << tt << " " << p;
-        for(auto j : c) cout << " " << j;
-        cout << endl;
-    }
 }
 
-void f2(){
-    int N; cin >> N;
-    vector<pair<string, string>> V(N);
-    for(auto &[s, t] : V) cin >> s >> t;
-
-    for(auto[s, t] : V){
-        bigint n = str_to_int(s + t);
-        bigint p = n / 7;
-        vector<int> nc = int_to_comb(n);
-        vector<int> pc = int_to_comb(p);
-        vector<int> comb(18);
-        for(int i = 0; i < 18; i++) comb[i] = nc[i] + pc[i];
-    }
-}
-
+double eps = 1e-9;
 int main(){
-    f1();
+    double time_start = get_time();
+    set<pair<string, int>> H;
+    vector<bigint> S;
+
+    int M = 12;
+    int K = 9;
+    init_hand_list(M, H);
+
+    {
+        vector<pair<string,int>> erase_list;
+        for(auto h : H) if(h.second <= 2359295) erase_list.push_back(h);
+        for(auto h : erase_list) H.erase(h);
+        cout << H.size() << endl;
+    }
+
+    map<vector<string>, string> str_to_p;
+    map<string, set<bigint>> hand_sep;
+    size_t N = 1000;
+    int ccc = 0;
+    while(S.size() < N){
+        map<bigint, double> mp;
+        for(auto [s, x] : H){
+            if(!hand_sep.count(s)){
+                if(ccc % 1 == 0){
+                    cout << "--" << s << " " << x << endl;
+                }
+                ccc++;
+                vector<int> loop(K+1);
+                for(int i = 0; i < K; i++) loop[i] = i;
+                loop[K] = M;
+
+                set<bigint> p_set;
+
+                bool b = true;
+                while(b){
+                    vector<bool> v(M, false);
+                    for(int i = 0; i < K; i++) v[loop[i]] = true;
+                    vector<string> t, u;
+                    for(int i = 0; i < M; i++){
+                        if(v[i]) t.push_back(string(1, s[i]));
+                        else u.push_back(string(1, s[i]));
+                    }
+
+                    //for(auto tt : t) cout << tt << " "; cout << endl;
+                    //for(auto uu : u) cout << uu << " "; cout << endl;
+
+                    string p;
+                    if(str_to_p.count(t)) p = str_to_p[t];
+                    else p = max_number(t);
+                    string q;
+                    if(str_to_p.count(u)) q = str_to_p[u];
+                    else q = max_number(u);
+                    //cout << p << endl;
+                    //cout << q << endl;
+                    if(p[0] != '-' && q[0] != '-'){
+                        p_set.insert(str_to_int(p));
+                        //cout << "--" << p << " " << q << endl;
+                    }
+
+                    b = false;
+                    for(int i = 0; i < K; i++){
+                        if(loop[i] < loop[i+1] - 1){
+                            loop[i]++;
+                            for(int j = 0; j < i; j++) loop[j] = j;
+                            b = true;
+                            break;
+                        }
+                    }
+                }
+                hand_sep[s] = p_set;
+            }
+
+            {
+                auto p_set = hand_sep[s];
+                int i = 0;
+                while(p_set.size()){
+                    bigint p = *p_set.rbegin();
+                    mp[p] += double(x) / (i + 1);
+                    p_set.erase(p);
+                    i++;
+                }
+            }
+        }
+        double best_val = 0;
+        bigint best_p = 0;
+        for(auto[p, x] : mp){
+            if(x > best_val + eps){
+                best_val = x;
+                best_p = p;
+            }
+            else if(x > best_val - eps){
+                chmax(best_val, x);
+                chmax(best_p, p);
+            }
+        }
+        S.push_back(best_p);
+
+        {
+            vector<string> clear_list;
+            for(auto [h, s] : hand_sep){
+                if(s.count(best_p)) clear_list.push_back(h);
+            }
+            for(auto h : clear_list) hand_sep[h].clear();
+        }
+
+        cout << best_p << endl;
+        /*for(auto[p, x] : mp){
+            cout << p << " " << x << endl;
+        }
+        cout << string(32, '-') << endl;*/
+    }
+
+    double time_end = get_time();
+    cout << fixed << setprecision(3);
+    cout << (time_end - time_start) / 1e9 << "[s]" << endl;
 }

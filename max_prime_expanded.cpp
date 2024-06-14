@@ -199,7 +199,7 @@ bool miller_rabin(bigint x){
             A.insert(rnd<uint>() % a_max + 1);
         }
     }
-    //cout << "A" << endl;
+    
     for(bigint a : A){
         bigint t = pow_mod(a, d, x);
         if(t == 1) continue;
@@ -246,9 +246,12 @@ bigint str_to_int(string s){
 
 bool number_test(bigint x){
     //return miller_rabin(x);
-    //x /= 10;
+    /*if(gcd(x % 10, 10) != 1) return false;
+    x /= 10;
     x *= 10;
-    return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);
+    return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);*/
+    //return miller_rabin(x) && (miller_rabin(x - 2) || miller_rabin(x + 2));
+    return miller_rabin(x*100 + 11) && miller_rabin(x*100 + 13);
 }
 
 bool max_nutural_sub(string s, string t){
@@ -267,6 +270,7 @@ bigint hand_upper_bound(vector<string> v){
 map<bigint, set<vector<string>>> pushed_state;
 
 bool skip_calc(string s, bigint x, vector<string> rest){
+    //return false;
     if(s.size() >= 2){
         string sr = s.substr(s.size() - 2);
         bigint sr_int = str_to_int(sr);
@@ -282,16 +286,19 @@ bool skip_calc(string s, bigint x, vector<string> rest){
             }
         }
     }
+
     
     string t = s;
     for(auto i : rest) t += i;
     for(char c : t) if(c == 'X') return false;
 
     bigint y = str_to_int(t);
-    if(y % 3 == 1) return false;
+    if(y % 3 != 0) return false;
 
+    //cout << "A1" << endl;
     if(rest.size() == 0) return false;
 
+    //cout << "A2" << endl;
     /*for(auto i : rest){
         bigint z = str_to_int(i);
         if(z%2 != 0 && z%5 != 0){
@@ -315,20 +322,16 @@ string max_number(vector<string> v){
     
     string rtn = "-1";
     bigint max_val = 0;
-    int64_t loop_cnt = 0;
     while(q.size()){
         auto[max_x, s, x, rest] = q.top();
         q.pop();
+
+        //cout << max_x << " " << s << " " << x;
+        //for(auto i : rest) cout << " " << i;
+        //cout << endl;
         if(max_val > max_x) break;
         if(skip_calc(s, x, rest)) continue;
-
-        if(loop_cnt%100000 == 0){
-            cout << max_x << " " << s << " " << x << ",";
-            for(auto ii : rest) cout << " " << ii;
-            cout << endl;
-        }
-        loop_cnt++;
-
+        //cout << "A" << endl;
         
         while(pushed_state.size()){
             bigint max_key = (*pushed_state.rbegin()).first;

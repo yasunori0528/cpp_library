@@ -1,20 +1,8 @@
-#include <bits/stdc++.h>
-#include <gmp.h>
-#include <gmpxx.h>
-using namespace std;
-using bigint = mpz_class;
-
-#include "rand.cpp"
-#include "time.cpp"
-#include "math.cpp"
-#include "miller_labin.cpp"
-#include "card.cpp"
-
 bool number_test(bigint x){
-    //return miller_rabin(x);
-    x /= 10;
-    x *= 10;
-    return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);
+    return miller_rabin(x);
+    //x /= 10;
+    //x *= 10;
+    //return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);
 }
 
 bool max_nutural_sub(string s, string t){
@@ -68,6 +56,7 @@ bool skip_calc(string s, bigint x, vector<string> rest){
 }
 
 string max_number(vector<string> v){
+    pushed_state.clear();
     if(v.size() == 0) return "-1";
     if(v.size() == 1){
         string s = v[0];
@@ -83,6 +72,9 @@ string max_number(vector<string> v){
     bigint max_val = 0;
     while(q.size()){
         auto[max_x, s, x, rest] = q.top();
+        //cout << max_x << " " << s << " " << x << " :";
+        //for(auto i : rest) cout << " " << i;
+        //cout << endl;
         q.pop();
         if(max_val > max_x) break;
         if(skip_calc(s, x, rest)) continue;
@@ -125,6 +117,7 @@ string max_number(vector<string> v){
                 bigint ub_rest = hand_upper_bound(next_rest);
                 bigint d_ub_rest = digit(ub_rest);
                 bigint next_max_x = next_x * pow(mpz_class(10), d_ub_rest) + ub_rest;
+                
                 q.push({next_max_x, next_s, next_x, next_rest});
                 pushed_state[next_x].insert(next_rest);
             }
@@ -167,27 +160,4 @@ void output_assigned_x(string s){
     cout << s;
     for(char c : assigned_list) cout << " | X = " << c;
     cout << endl; 
-}
-
-int main(){
-    int N; cin >> N;
-    vector<string> v(N);
-    for(auto &s : v) cin >> s;
-
-    for(auto s : v){
-        if(s.size() == 1) continue;
-        for(char c : s){
-            if(c == 'X'){
-                cout << "! " << s << " is invalid input" << endl;
-                assert(false);
-            }
-        }
-    }
-
-    auto time_start = get_time();
-    string t = max_number(v);
-    auto time_end = get_time();
-    output_assigned_x(t);
-    cout << fixed << setprecision(3);
-    cout << (time_end - time_start) / 1e9 << "[s]" << endl;
 }

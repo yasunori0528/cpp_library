@@ -8,20 +8,20 @@ using bigint = mpz_class;
 
 bool number_test(bigint x){
     //return miller_rabin(x);
-    //if(gcd(x % 10, 10) != 1) return false; 
-    //x /= 10;
+    if(gcd(x % 10, 10) != 1) return false; 
+    x /= 10;
     x *= 10;
     return miller_rabin(x + 1) && miller_rabin(x + 3) && miller_rabin(x + 7) && miller_rabin(x + 9);
 }
 
 bigint solve(){
-    string stem = "99998888777766665555444433332222KKKK";//mod 3 = 0
-    bigint stem_int = str_to_int(stem) * pow(bigint(10), 29);
+    string stem = "99998888777766665555444433332222KKKKK";//mod 3 = 1
+    bigint stem_int = str_to_int(stem) * pow(bigint(10), 30);
     //TJQA*4+X(-A)
     //'10'*4+'12'*4+'1'*12+X(X=J) or '10'*4+'12'*4+'1'*11+X()
     vector<int> v;
     for(int i = 0; i < 4; i++) v.push_back(10);
-    for(int i = 0; i < 11; i++) v.push_back(1);
+    for(int i = 0; i < 12; i++) v.push_back(1);
     for(int i = 0; i < 4; i++) v.push_back(12);
     sort(v.begin(), v.end());
     int n = v.size();
@@ -29,8 +29,8 @@ bigint solve(){
     string max_str;
     int64_t loop_cnt = 0;
     int64_t loop_all =
-    5290740;
-    //8817900;
+    //5290740;
+    8817900;
     set<bigint> S;
     do{
         string s;
@@ -62,8 +62,8 @@ bigint solve(){
             if(cntJ < 4) continue;
             vector<int> X =
             //{12, 13};
-            //{12};
-            {10, 13};
+            {12};
+            //{10, 13};
             for(int x : X){
                 t[i] = alphabet[x];
                 bigint t_int = str_to_int(t);
