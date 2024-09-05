@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#include "atcoder/segment_tree.cpp"
+#include "segment_tree.cpp"
 
 random_device seed_gen;
 mt19937 engine(seed_gen());
