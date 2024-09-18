@@ -1,4 +1,5 @@
 bool number_test(bigint x){
+    //return gcd(bigint(x%30).get_ui(), 30) == 1;
     return miller_rabin(x);
     //x /= 10;
     //x *= 10;
@@ -55,7 +56,7 @@ bool skip_calc(string s, bigint x, vector<string> rest){
     return true;
 }
 
-string max_number(vector<string> v){
+string max_number(vector<string> v, function<bool(bigint)> f){
     pushed_state.clear();
     if(v.size() == 0) return "-1";
     if(v.size() == 1){
@@ -147,6 +148,12 @@ string max_number(vector<string> v){
         }
     }
     return rtn;
+}
+
+string max_number(string s, function<bool(bigint)> f) {
+    vector<string> v;
+    for(char c : s) v.push_back(string(1, c));
+    return max_number(v, f);
 }
 
 void output_assigned_x(string s){
