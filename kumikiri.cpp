@@ -161,17 +161,18 @@ bool in(string x, string y) {
 string f(vector<pair<bigint,string>> &V, vector<tuple<bigint,bigint,string>> &W) {
     int n = W.size();
     bigint best = 0;
+    bigint best_b;
     int id = 0;
     string s;
     bigint a_max = V[0].first;
     bigint b_max = get<0>(W[0]);
     for(int i = 0; i < n; i++) {
         auto &[b, ignore, x] = W[i];
-        if(b * 10 < b_max) break;
+        if(b * 2 < b_max) break;
         bigint temp = 0;
         for(int j = 0; j < (int)V.size(); j++) {
             auto [a, y] = V[j];
-            if(a * 10 < a_max) {
+            if(a * 128 < a_max) {
                 //if(i == 0) cout << "j : " << j << endl;
                 break;
             }
@@ -180,12 +181,16 @@ string f(vector<pair<bigint,string>> &V, vector<tuple<bigint,bigint,string>> &W)
                 //cout << x << " " << a << " " << y << endl;
             }
         }
+        bigint old_b = b;
         b = temp;
         if(chmax(best, temp)) {
+            best_b = old_b;
             s = x;
             id = i;
         }
     }
+
+    //cout << "b_max / b_best = " << b_max << " / " << best_b << endl;
 
     if(best == 0) return "-1";
 
