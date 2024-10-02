@@ -3,5 +3,6 @@
 #include "math.cpp"
 #include "miller_labin.cpp"
 #include "pollard_rho.cpp"
+#include "trial_divition.cpp"
 #include "card.cpp"
 #include "max_prime.cpp"
