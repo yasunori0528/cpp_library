@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#include "segment_tree.cpp"
+#include "segtree.cpp"
 
 random_device seed_gen;
 mt19937 engine(seed_gen());
@@ -11,37 +11,29 @@ int64_t get_time(){
     return t.tv_sec * int64_t(1'000'000'000) + t.tv_nsec;
 }
 
-using value_type = vector<int>;
+using value_type = int64_t;
 using ans_type = vector<value_type>;
 
 int n, m;
 vector<value_type> A;
 vector<tuple<int,int,int,value_type>> V;
 
-int l = 100;
-//O(l * (n + m * log(n)))
-
 value_type id;
 
 void init_id() {
-    id.resize(l);
-    for(int i = 0; i < l; i++) id[i] = i;
+    id = 0;
 }
 
 value_type f(value_type x, value_type y) {
-    value_type z(l);
-    for(int i = 0; i < l; i++) z[i] = x[y[i]];
-    return z;
+    return x + y;
 }
 
 value_type rand_value() {
-    vector<int> x = id;
-    shuffle(x.begin(), x.end(), engine);
-    return x;
+    return engine() & 0x3FF;
 }
 
 void output_value(value_type x) {
-    for(auto i : x) cout << i << " ";
+    cout << x;
 }
 
 void input() {
@@ -69,6 +61,8 @@ void input() {
 
 void output_input() {
     cout << n << " " << m << endl;
+    for(auto a : A) cout << a << " ";
+    cout << endl;
     for(auto [x, y, z, w] : V) {
         if(x == 0) {
             cout << x << " " << y << " ";
@@ -89,7 +83,7 @@ void output(ans_type ans) {
 }
 
 ans_type solve() {
-    segment_tree<value_type> S(n, f, id);
+    segtree<value_type> S(n, f, id);
     S.build(A);
     vector<value_type> ans;
     for(auto [x, y, z, w] : V) {
