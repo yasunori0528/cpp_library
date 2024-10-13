@@ -1,3 +1,0 @@
-/mnt/c/code/61_drawing/build/CMakeFiles/main.dir
-/mnt/c/code/61_drawing/build/CMakeFiles/edit_cache.dir
-/mnt/c/code/61_drawing/build/CMakeFiles/rebuild_cache.dir
