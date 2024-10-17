@@ -1,6 +1,7 @@
 //カードの種類
 //'a'~'n' は 'X' に 0 ~ 13 を代入した状態を指す.
 const string alphabet = "0123456789TJQKXabcdefghijklmn";
+const string deck = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
 
 int char_to_int(char c) {
     if('0' <= c && c <= '9') return c - '0';
@@ -9,7 +10,17 @@ int char_to_int(char c) {
     else if(c == 'Q') return 12;
     else if(c == 'K') return 13;
     else if(c == 'X') return 14;
-    else return c - 'a';
+    else if('a' <= c || c <= 'n') return c - 'a';
+    else assert(false);
+    return 0;
+}
+
+bool is_symbol(char c) {
+    return c == '=' || c == '*' || c == '^';
+}
+
+bool is_joker(char c) {
+    return c == 'X' || ('a' <= c && c <= 'n');
 }
 
 bigint str_to_int(string s) {
