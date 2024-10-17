@@ -7,10 +7,35 @@ public:
         s = 0;
     }
 
+    hand(string t) {
+        s = 0;
+        for(char c : t) {
+            if(is_symbol(c)) continue;
+            else if(is_joker(c)) s += (uint64_t(1)<<(14 * 3));
+            else s += (uint64_t(1)<<(char_to_int(c) * 3));
+        }
+    }
+
+    int count(int x) {
+        return s >> (x * 3) && 0b111;
+    }
+
+    int count(char c) {
+        return count(char_to_int(c));
+    }
+
     void insert(char c) {
         assert(('1' <= c && c <= '9') || ('A' <= c && c <= 'Z'));
         int x = char_to_int(c);
         s += (uint64_t(1)<<(x*3));
+    }
+
+    bool exist(string t) {
+        hand t_hand = hand(t);
+        for(int i = 1; i <= 14; i++) {
+            if(count(i) < t_hand.count(i)) return false;
+        }
+        return true;
     }
 };
 
@@ -63,5 +88,10 @@ public:
             draw();
             pass();
         }
+    }
+
+    bool play(string s) {
+        if(!hands[t].exist(s)) return false;
+        
     }
 };

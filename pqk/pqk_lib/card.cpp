@@ -10,7 +10,17 @@ int char_to_int(char c) {
     else if(c == 'Q') return 12;
     else if(c == 'K') return 13;
     else if(c == 'X') return 14;
-    else return c - 'a';
+    else if('a' <= c || c <= 'n') return c - 'a';
+    else assert(false);
+    return 0;
+}
+
+bool is_symbol(char c) {
+    return c == '=' || c == '*' || c == '^';
+}
+
+bool is_joker(char c) {
+    return c == 'X' || ('a' <= c && c <= 'n');
 }
 
 bigint str_to_int(string s) {
