@@ -1,6 +1,7 @@
 //カードの種類
 //'a'~'n' は 'X' に 0 ~ 13 を代入した状態を指す.
 const string alphabet = "0123456789TJQKXabcdefghijklmn";
+const string deck = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
 
 int char_to_int(char c) {
     if('0' <= c && c <= '9') return c - '0';
