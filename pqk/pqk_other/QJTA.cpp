@@ -4,7 +4,7 @@
 using namespace std;
 using bigint = mpz_class;
 
-#include "pqk_lib/pqk_all.cpp"
+#include "../pqk_lib/pqk_all.cpp"
 
 bool number_test(bigint x){
     //return miller_rabin(x);

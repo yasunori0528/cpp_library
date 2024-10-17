@@ -3,7 +3,7 @@
 #include <gmpxx.h>
 using namespace std;
 using bigint = mpz_class;
-#include "pqk_lib/pqk_all.cpp"
+#include "../pqk_lib/pqk_all.cpp"
 
 int64_t root(int64_t p){
     auto v = pollard_rho(p - 1);

@@ -4,7 +4,7 @@
 using namespace std;
 using bigint = mpz_class;
 
-#include "pqk_lib/pqk_all.cpp"
+#include "../pqk_lib/pqk_all.cpp"
 
 bool is_op(char c) {
     return c == '*' || c == '^' || c == '=';
