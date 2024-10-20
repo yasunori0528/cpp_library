@@ -23,6 +23,18 @@ bool is_joker(char c) {
     return c == 'X' || ('a' <= c && c <= 'n');
 }
 
+char unassign(char c) {
+    if('a' <= c && c <= 'n') return 'X';
+    return c;
+}
+
+char assign(char c) {
+    if('a' <= c && c <= 'n') {
+        return alphabet[char_to_int(c)];
+    }
+    return c;
+}
+
 bigint str_to_int(string s) {
     if(s.size() == 0) return 0;
     string t = s;
@@ -58,4 +70,21 @@ int max_num_of_face(string s) {
         else i++;
     }
     return rtn;
+}
+
+void print_str(string &s) {
+    string s_unassign = s;
+    string s_assign = s;
+    for(char &c : s_unassign) c = unassign(c);
+    for(char &c : s_assign) c = assign(c);
+
+    cout << s_unassign;
+    if(s_assign != s_unassign) {
+        cout << "(" << s_assign << ")";
+    }
+}
+
+void println_str(string &s) {
+    print_str(s);
+    cout << endl;
 }
