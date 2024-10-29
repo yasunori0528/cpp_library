@@ -5,6 +5,7 @@ const string deck = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
 
 int char_to_int(char c) {
     if('0' <= c && c <= '9') return c - '0';
+    else if(c == 'A') return 1;
     else if(c == 'T') return 10;
     else if(c == 'J') return 11;
     else if(c == 'Q') return 12;

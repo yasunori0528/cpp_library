@@ -16,14 +16,14 @@ int main() {
         A[s]++;
     }
 
-    vector<tuple<int,int,string>> W;
+    vector<tuple<int,int,bigint,string>> W;
     for(auto &[s, cnt] : A) {
         int a = s.size();
-        W.push_back({-cnt, a, s});
+        W.push_back({-cnt, a, str_to_int(s), s});
     }
 
     sort(W.begin(), W.end());
-    for(auto &[cnt, a, s] : W) {
-        cout << -cnt << " " << a << " " << s << endl;
+    for(auto &[cnt, a, x, s] : W) {
+        cout << -cnt << "," << a << "," << x << "," << s << endl;
     }
 }
