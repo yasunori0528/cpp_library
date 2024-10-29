@@ -59,23 +59,3 @@ void init_rh_base(int N){
         rh_base_pow[i] = rh_mul(rh_base_pow[i-1], rh_base);
     }
 }
-
-int main(){
-    srand(time(NULL));
-    int N; cin >> N;
-    for(int i = 0; i < N; i++){
-        uint64_t a = rand();
-        uint64_t b = rand();
-        uint64_t c = rand();
-        uint64_t d = rand();
-        uint64_t x = (a << 32) + b;
-        uint64_t y = (c << 32) + d;
-        x %= rh_mod;
-        y %= rh_mod;
-        __uint128_t p = rh_mul(x, y);
-        __uint128_t q = __uint128_t(x) * y % rh_mod;
-        if(p != q){
-            cout << x << " " << y << " " << (uint64_t)(q-p) << endl;
-        }
-    }
-}
