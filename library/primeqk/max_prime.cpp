@@ -1,6 +1,5 @@
 bool number_test(bigint x) {
-    //return miller_rabin(x);
-    return miller_rabin(x/10*10+1) && miller_rabin(x/10*10+3) && miller_rabin(x/10*10+7) && miller_rabin(x/10*10+9);
+    return miller_rabin(x);
 }
 
 bigint max_potential(bigint x, hand g) {
@@ -29,10 +28,6 @@ bigint max_prime(hand h) {
         auto itr = Q.rbegin();
         auto [max_x, x, g] = *itr;
         Q.erase(*itr);
-
-        //cout << x << " ";
-        //g.print();
-        //cout << endl;
 
         if(g.size() == 0) {
             if(engine() % 10000 == 0) cout << x << endl;
