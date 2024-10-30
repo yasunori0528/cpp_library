@@ -1,3 +1,3 @@
-# Hachi's Library
+# C++ Library
 
 私が普段使っているC++のライブラリです．
