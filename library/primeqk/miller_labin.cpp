@@ -1,4 +1,4 @@
-bool miller_rabin(bigint x){
+bool miller_rabin(bigint x, size_t k = 100){
     if(x <= 1) return false;
     if(x == 2) return true;
     if(x % 2 == 0) return false;
@@ -10,8 +10,7 @@ bool miller_rabin(bigint x){
         s++;
     }
 
-    bigint k = 100;//テスト回数
-    if(x - 1 < k) k = x - 1;
+    if(x - 1 < k) k = bigint_to_int(x) - 1;
 
     set<bigint> A;
     
