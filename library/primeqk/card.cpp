@@ -1,11 +1,12 @@
 //カードの種類
 //'a'~'n' は 'X' に 0 ~ 13 を代入した状態を指す.
-const string alphabet = "0123456789TJQKXabcdefghijklmn";
-const string deck = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
+const string ALPHABET = "0123456789TJQKXabcdefghijklmn";
+const string DECK = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
+const int NUM_CARD_TYPES = 15;
 
 char int_to_char(int &x) {
-    assert(0 <= x && x <= 14);
-    return alphabet[x];
+    assert(0 <= x && x < NUM_CARD_TYPES);
+    return ALPHABET[x];
 }
 
 int char_to_int(char &c) {
@@ -14,7 +15,7 @@ int char_to_int(char &c) {
     if(c == 'J') return 11;
     if(c == 'Q') return 12;
     if(c == 'K') return 13;
-    if('a' <= c || c <= 'n') return c - 'a';
+    if(c == 'X') return 14;
     assert(false);
     return 0;
 }
@@ -25,14 +26,22 @@ char unassign(char &c) {
 }
 
 char assign(char &c) {
-    if('a' <= c && c <= 'n') return alphabet[char_to_int(c)];
+    if('a' <= c && c <= 'n') return ALPHABET[c - 'a'];
     return c;
+}
+
+bool is_symbol(char c) {
+    return c == '=' || c == '*' || c == '^';
+}
+
+bool is_joker(char c) {
+    return c == 'X' || ('a' <= c && c <= 'n');
 }
 
 bigint str_to_int(string &s) {
     bigint rtn = 0;
     for(char &c : s) {
-        int x = char_to_int(c);
+        int x = char_to_int(assign(c));
         if(x < 10) rtn = rtn * 10 + x;
         else rtn = rtn * 100 + x;
     }
