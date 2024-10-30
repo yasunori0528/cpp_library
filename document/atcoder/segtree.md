@@ -32,9 +32,17 @@ void seg.build(vector<T> &data)
 
 ## 値の更新・取得
 
-値の更新・取得は `std::vector<T>` と同様に行うことができます．
-
 ```cpp
 seg[i] = x; //更新
 T x = seg[i]; //取得
 ```
+
+値の更新・取得は `std::vector` と同じように行うことができます．
+
+## query
+
+```cpp
+T seg.query(int l, int r);
+```
+`op(seg[l], ... , seg[r-1])` を計算します．
+`l = r` のときは、 `identity` を返します．

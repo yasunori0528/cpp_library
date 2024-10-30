@@ -1,11 +1,5 @@
 template<typename T>
 class segtree {
-private:
-    int n;
-    vector<T> tree;
-    function<T(T, T)> op;
-    T identity;
-
 public:
     segtree(int n_, function<T(T, T)> op_, T identity_)
         : op(op_), identity(identity_) {
@@ -25,29 +19,6 @@ public:
         }
         for (int i = n - 2; i >= 0; i--) {
             tree[i] = op(tree[i * 2 + 1], tree[i * 2 + 2]);
-        }
-    }
-
-    void update(int i, T value) {
-        i += n - 1;
-        tree[i] = value;
-        while (i > 0) {
-            i = (i - 1) / 2;
-            tree[i] = op(tree[i * 2 + 1], tree[i * 2 + 2]);
-        }
-    }
-
-    T query_sub(int a, int b, int i, int l, int r) {
-        if(r <= a || b <= l) {
-            return identity;
-        }
-        else if(a <= l && r <= b) {
-            return tree[i];
-        }
-        else {
-            T res_l = query_sub(a, b, i * 2 + 1, l, (l + r) / 2);
-            T res_r = query_sub(a, b, i * 2 + 2, (l + r) / 2, r);
-            return op(res_l, res_r);
         }
     }
 
@@ -76,5 +47,34 @@ public:
 
     reference operator[](int idx) {
         return reference(*this, idx);
+    }
+
+private:
+    int n;
+    vector<T> tree;
+    function<T(T, T)> op;
+    T identity;
+
+    void update(int i, T value) {
+        i += n - 1;
+        tree[i] = value;
+        while (i > 0) {
+            i = (i - 1) / 2;
+            tree[i] = op(tree[i * 2 + 1], tree[i * 2 + 2]);
+        }
+    }
+
+    T query_sub(int a, int b, int i, int l, int r) {
+        if(r <= a || b <= l) {
+            return identity;
+        }
+        else if(a <= l && r <= b) {
+            return tree[i];
+        }
+        else {
+            T res_l = query_sub(a, b, i * 2 + 1, l, (l + r) / 2);
+            T res_r = query_sub(a, b, i * 2 + 2, (l + r) / 2, r);
+            return op(res_l, res_r);
+        }
     }
 };
