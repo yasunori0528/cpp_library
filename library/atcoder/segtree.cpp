@@ -14,9 +14,9 @@ public:
         for (size_t i = 0; i < data.size(); i++) {
             tree[i + n - 1] = data[i];
         }
-        for (size_t i = data.size(); i < n; i++) {
+        /*for (size_t i = data.size(); i < n; i++) {
             tree[i + n - 1] = identity;
-        }
+        }*/
         for (int i = n - 2; i >= 0; i--) {
             tree[i] = op(tree[i * 2 + 1], tree[i * 2 + 2]);
         }
