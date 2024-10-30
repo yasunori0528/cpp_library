@@ -17,8 +17,7 @@ segtree<T> seg(int n, function<T(T, T)> op, T identity)
 - `op` : モノイドの二項演算
 - `identity` : モノイドの単位元
 
-`n` 個の `identity` が並んだ配列を作成します．
-
+長さ `n` の配列を作ります． 初期値はすべて `identity` です．
 
 ## build
 
@@ -28,7 +27,9 @@ void seg.build(vector<T> &data)
 
 配列の値が `data` である `segtree` を構築します．
 
-`data` の長さが`n` 以下である必要があります．
+### 制約
+
+- `data.size()` $\leq$ `n`
 
 ## 値の更新・取得
 
@@ -45,4 +46,5 @@ T x = seg[i]; //取得
 T seg.query(int l, int r);
 ```
 `op(seg[l], ... , seg[r-1])` を計算します．
+
 `l = r` のときは、 `identity` を返します．
