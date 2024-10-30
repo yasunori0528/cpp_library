@@ -4,12 +4,12 @@ const string ALPHABET = "0123456789TJQKXabcdefghijklmn";
 const string DECK = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
 const int NUM_CARD_TYPES = 15;
 
-char int_to_char(int &x) {
+char int_to_char(int x) {
     assert(0 <= x && x < NUM_CARD_TYPES);
     return ALPHABET[x];
 }
 
-int char_to_int(char &c) {
+int char_to_int(char c) {
     if('0' <= c && c <= '9') return c - '0';
     if(c == 'T') return 10;
     if(c == 'J') return 11;
@@ -20,22 +20,33 @@ int char_to_int(char &c) {
     return 0;
 }
 
-char unassign(char &c) {
-    if('a' <= c && c <= 'n') return 'X';
-    return c;
-}
-
 char assign(char &c) {
     if('a' <= c && c <= 'n') return ALPHABET[c - 'a'];
     return c;
 }
 
-bool is_symbol(char c) {
+char unassign(char &c) {
+    if('a' <= c && c <= 'n') return 'X';
+    return c;
+}
+
+bool is_symbol(char &c) {
     return c == '=' || c == '*' || c == '^';
 }
 
-bool is_joker(char c) {
+bool is_joker(char &c) {
     return c == 'X' || ('a' <= c && c <= 'n');
+}
+
+string int_to_str(bigint x) {
+    string s;
+    while(x) {
+        bigint r = x % 10;
+        s.push_back('0' + bigint_to_int(r));
+        x /= 10;
+    }
+    reverse(s.begin(), s.end());
+    return s;
 }
 
 bigint str_to_int(string &s) {
@@ -46,16 +57,6 @@ bigint str_to_int(string &s) {
         else rtn = rtn * 100 + x;
     }
     return rtn;
-}
-
-string int_to_str(bigint x) {
-    string s;
-    while(x) {
-        s.push_back('0' + x.get_ui() % 10);
-        x /= 10;
-    }
-    reverse(s.begin(), s.end());
-    return s;
 }
 
 void print_str(string &s) {

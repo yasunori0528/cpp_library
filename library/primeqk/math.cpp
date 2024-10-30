@@ -1,8 +1,20 @@
+template<typename T>
+uint bigint_to_int(T x);
+
+template<>
+uint bigint_to_int(mpz_class x) {
+    return x.get_ui();
+}
+
+/*template<>
+uint bigint_to_int(boost::multiprecision::cpp_int x) {
+    return static_cast<uint>(x);
+}*/
+
 template <typename T>
 bool chmax(T &a, const T& b) {
     if (a < b) {
         a = b;  // aをbで更新
-        //a.print();
         return true;
     }
     return false;
