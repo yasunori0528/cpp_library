@@ -3,6 +3,11 @@
 const string alphabet = "0123456789TJQKXabcdefghijklmn";
 const string deck = "111122223333444455556666777788889999TTTTJJJJQQQQKKKKXX";
 
+char int_to_char(int x) {
+    assert(0 <= x && x <= 14);
+    return alphabet[x];
+}
+
 int char_to_int(char c) {
     if('0' <= c && c <= '9') return c - '0';
     else if(c == 'A') return 1;

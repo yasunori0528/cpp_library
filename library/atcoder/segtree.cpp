@@ -17,8 +17,11 @@ public:
     
     void build(vector<T> &data) {
         assert(data.size() <= n);
-        for (int i = 0; i < data.size(); i++) {
+        for (size_t i = 0; i < data.size(); i++) {
             tree[i + n - 1] = data[i];
+        }
+        for (size_t i = data.size(); i < n; i++) {
+            tree[i + n - 1] = identity;
         }
         for (int i = n - 2; i >= 0; i--) {
             tree[i] = op(tree[i * 2 + 1], tree[i * 2 + 2]);
@@ -49,6 +52,7 @@ public:
     }
 
     T query(int a, int b) {
+        assert(0 <= a && a <= b && b <= n);
         return query_sub(a, b, 0, 0, n);
     }
 
