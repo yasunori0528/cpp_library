@@ -2,34 +2,34 @@ const int HAND_SEGMENT_WIDTH = 4;
 class hand {
 public:
     hand() {
-        a = 0;
-        len = 0;
+        data = 0;
+        sz = 0;
     }
 
     hand(string &s) {
-        a = 0;
-        len = 0;
+        data = 0;
+        sz = 0;
         for(char &c : s) {
             if(is_symbol(c)) continue;
-            a += uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
-            len++;
+            data += uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
+            sz++;
         }
     }
 
-    int get_a() {
-        return a;
+    uint64_t get_data() {
+        return data;
     }
 
     int size() {
-        return len;
+        return sz;
     }
 
     int count(int x) {
-        return a >> (x * HAND_SEGMENT_WIDTH) & uint64_t(0b1111);
+        return data >> (x * HAND_SEGMENT_WIDTH) & uint64_t(0b1111);
     }
 
     int count(char c) {
-        return a >> (char_to_int(c) * HAND_SEGMENT_WIDTH) & uint64_t(0b1111);
+        return data >> (char_to_int(c) * HAND_SEGMENT_WIDTH) & uint64_t(0b1111);
     }
 
     bool contain(string &s) {
@@ -41,30 +41,30 @@ public:
     }
 
     void draw(int x) {
-        a += uint64_t(1) << (x * HAND_SEGMENT_WIDTH);
-        len++;
+        data += uint64_t(1) << (x * HAND_SEGMENT_WIDTH);
+        sz++;
     }
 
     void draw(char c) {
-        a += uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
-        len++;
+        data += uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
+        sz++;
     }
 
     void discard(int x) {
-        a -= uint64_t(1) << (x * HAND_SEGMENT_WIDTH);
-        len--;
+        data -= uint64_t(1) << (x * HAND_SEGMENT_WIDTH);
+        sz--;
     }
 
     void discard(char c) {
-        a -= uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
-        len--;
+        data -= uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
+        sz--;
     }
 
     void play(string &s) {
         for(char &c : s) {
             if(is_symbol(c)) continue;
-            a -= uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
-            len++;
+            data -= uint64_t(1) << (char_to_int(c) * HAND_SEGMENT_WIDTH);
+            sz++;
         }
     }
 
@@ -129,10 +129,10 @@ public:
     }
 
 private:
-    uint64_t a;
-    int len;
+    uint64_t data;
+    int sz;
 };
 
 bool operator<(hand h, hand g) {
-    return h.get_a() < g.get_a();
+    return h.get_data() < g.get_data();
 }
