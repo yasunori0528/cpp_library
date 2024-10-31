@@ -18,7 +18,7 @@ bigint max_prime(hand h)
 ### number_test
 
 ```cpp
-bool number_test(bigint x)
+bool max_number_test(bigint x)
 ```
 
 デフォルトでは `x` が素数のとき `true` を返す関数です．

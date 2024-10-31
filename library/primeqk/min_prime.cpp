@@ -1,12 +1,12 @@
-bool max_number_test(bigint x) {
+bool min_number_test(bigint x) {
     return miller_rabin(x);
 }
 
-bigint max_potential(bigint x, hand g) {
+bigint min_potential(bigint x, hand g) {
     if(g.size() == 0) return x;
     if(g.div25()) return 0;
 
-    auto [y, d] = g.max_natural();
+    auto [y, d] = g.min_natural();
     bigint rtn = x * pow((bigint)10, (bigint)d) + y;
     
     int r3 = g.mod3();
@@ -19,18 +19,18 @@ bigint max_potential(bigint x, hand g) {
     return rtn;
 }
 
-bigint max_prime(hand h) {
+bigint min_prime(hand h) {
     set<tuple<bigint, bigint, hand>> Q;
-    Q.insert(make_tuple(h.max_natural().first, bigint(0), h));
+    Q.insert(make_tuple(h.min_natural().first, bigint(0), h));
 
     while(Q.size()) {
-        auto itr = Q.rbegin();
-        auto [max_x, x, g] = *itr;
+        auto itr = Q.begin();
+        auto [min_x, x, g] = *itr;
         Q.erase(*itr);
 
         if(g.size() == 0) {
             //if(engine() % 10000 == 0) cout << x << endl;
-            if(max_number_test(x)) return x;
+            if(min_number_test(x)) return x;
             else continue;
         }
 
@@ -44,13 +44,13 @@ bigint max_prime(hand h) {
             hand next_g = g;
             if(g.count(i)) {
                 next_g.discard(i);
-                bigint next_max_x = max_potential(next_x, next_g);
-                if(next_max_x > 0) Q.insert(make_tuple(next_max_x, next_x, next_g));
+                bigint next_min_x = min_potential(next_x, next_g);
+                if(next_min_x > 0) Q.insert(make_tuple(next_min_x, next_x, next_g));
             }
             else if(g.count(14)) {
                 next_g.discard(14);
-                bigint next_max_x = max_potential(next_x, next_g);
-                if(next_max_x > 0) Q.insert(make_tuple(next_max_x, next_x, next_g));
+                bigint next_min_x = min_potential(next_x, next_g);
+                if(next_min_x > 0) Q.insert(make_tuple(next_min_x, next_x, next_g));
             }
         }
     }

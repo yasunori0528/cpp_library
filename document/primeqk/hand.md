@@ -140,10 +140,18 @@ int h.mod11()
 ## max_natural
 
 ```cpp
-bigint h.max_natural()
+pair<bigint,int> h.max_natural()
 ```
 
-`h` で作ることのできる最大の自然数を返します．
+`h` をすべて使って作ることのできる非負整数のうち最大のものとその桁数 (leading zero を含む) の pair を返します．
+
+## min_natural
+
+```cpp
+bigint h.min_natural()
+```
+
+`h` をすべて使って作ることのできる非負整数のうち最小のものとその桁数 (leading zero を含む) の pair を返します．
 
 ## print
 
