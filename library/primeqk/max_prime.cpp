@@ -1,4 +1,4 @@
-bool number_test(bigint x) {
+bool max_number_test(bigint x) {
     return miller_rabin(x);
 }
 
@@ -6,8 +6,7 @@ bigint max_potential(bigint x, hand g) {
     if(g.size() == 0) return x;
     if(g.div25()) return 0;
 
-    bigint y = g.max_natural();
-    int d = digit(y);
+    auto [y, d] = g.max_natural();
     bigint rtn = x * pow((bigint)10, (bigint)d) + y;
     
     int r3 = g.mod3();
@@ -22,7 +21,7 @@ bigint max_potential(bigint x, hand g) {
 
 bigint max_prime(hand h) {
     set<tuple<bigint, bigint, hand>> Q;
-    Q.insert(make_tuple(h.max_natural(), bigint(0), h));
+    Q.insert(make_tuple(h.max_natural().first, bigint(0), h));
 
     while(Q.size()) {
         auto itr = Q.rbegin();
@@ -30,8 +29,8 @@ bigint max_prime(hand h) {
         Q.erase(*itr);
 
         if(g.size() == 0) {
-            if(engine() % 10000 == 0) cout << x << endl;
-            if(number_test(x)) return x;
+            //if(engine() % 10000 == 0) cout << x << endl;
+            if(max_number_test(x)) return x;
             else continue;
         }
 

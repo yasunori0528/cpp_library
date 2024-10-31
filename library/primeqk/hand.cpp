@@ -101,23 +101,57 @@ public:
         return r;
     }
 
-    bigint max_natural() {
-        bigint rtn = 0;
-        for(int i = 9; i >= 0; i--) {
-            for(int j = 0; j < count(i); j++) {
-                rtn = rtn * 10 + i;
-            }
+    void natural_sub(bigint &rtn, int &d, int i, int c) {
+        int d_i = (i < 10) ? 1 : 2;
+        int e_i = (i < 10) ? 10 : 100;
+        d += c * d_i;
+        for(int j = 0; j < c; j++) {
+            rtn = rtn * e_i + i;
         }
-        for(int j = 0; j < count(14); j++) {
-            rtn = rtn * 100 + 13;
-        }
-        for(int i = 13; i >= 10; i--) {
-            for(int j = 0; j < count(i); j++) {
-                rtn = rtn * 100 + i;
-            }
-        }
+    }
 
-        return rtn;
+    //{大きさ, 桁数} の組を返す．(leading zero を含む)
+    pair<bigint, int> max_natural() {
+        bigint rtn = 0;
+        int d = 0;
+        natural_sub(rtn, d, 9, count(9));
+        natural_sub(rtn, d, 8, count(8));
+        natural_sub(rtn, d, 7, count(7));
+        natural_sub(rtn, d, 6, count(6));
+        natural_sub(rtn, d, 5, count(5));
+        natural_sub(rtn, d, 4, count(4));
+        natural_sub(rtn, d, 3, count(3));
+        natural_sub(rtn, d, 2, count(2));
+        natural_sub(rtn, d, 13, count(13) + count(14));
+        natural_sub(rtn, d, 12, count(12));
+        natural_sub(rtn, d, 11, count(11));
+        natural_sub(rtn, d, 1, count(1));
+        natural_sub(rtn, d, 10, count(10));
+        natural_sub(rtn, d, 0, count(0));
+
+        return make_pair(rtn, d);
+    }
+
+    //{大きさ, 桁数} の組を返す．(leading zero を含む)
+    pair<bigint, int> min_natural() {
+        bigint rtn = 0;
+        int d = 0;
+        natural_sub(rtn, d, 0, count(0) + count(14));
+        natural_sub(rtn, d, 10, count(10));
+        natural_sub(rtn, d, 1, count(1));
+        natural_sub(rtn, d, 11, count(11));
+        natural_sub(rtn, d, 12, count(12));
+        natural_sub(rtn, d, 13, count(13));
+        natural_sub(rtn, d, 2, count(2));
+        natural_sub(rtn, d, 3, count(3));
+        natural_sub(rtn, d, 4, count(4));
+        natural_sub(rtn, d, 5, count(5));
+        natural_sub(rtn, d, 6, count(6));
+        natural_sub(rtn, d, 7, count(7));
+        natural_sub(rtn, d, 8, count(8));
+        natural_sub(rtn, d, 9, count(9));
+        
+        return make_pair(rtn, d);
     }
 
     void print() {

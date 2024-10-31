@@ -15,12 +15,14 @@ mt19937 engine(seed_gen());
 #include "card.cpp"
 #include "hand.cpp"
 #include "max_prime.cpp"
+#include "min_prime.cpp"
 
 int main() {
     string s; cin >> s;
     int64_t t_start = get_time();
 
     cout << max_prime(hand(s)) << endl;
+    cout << min_prime(hand(s)) << endl;
 
     int64_t t_end = get_time();
     cout << fixed << setprecision(6);
