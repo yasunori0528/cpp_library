@@ -1,11 +1,15 @@
 template<typename T>
 uint bigint_to_int(T x);
 
+//使うほうのコメントアウトを外す
+
+//gmp
 template<>
 uint bigint_to_int(mpz_class x) {
     return x.get_ui();
 }
 
+//boost
 /*template<>
 uint bigint_to_int(boost::multiprecision::cpp_int x) {
     return static_cast<uint>(x);
