@@ -70,4 +70,41 @@ bool is_joker(char &c)
 
 ## int_to_str
 
+```cpp
+string int_to_str(bigint x)
+```
+
+数値を文字列に変換します．
+
+`std::to_string(int x)` の多倍長整数バージョンです．
+
+## str_to_int
+
+```cpp
+bigint str_to_int(string &s)
+```
+
+`0123456789TJQKabcdefghijklmn` からなる文字列を数値に変換します．
+
 ## print_str
+
+```cpp
+void print_str(string &s)
+```
+
+文字列を出力します．
+
+`a` ~ `n` が含まれる場合，代入前の文字列と代入後の文字列を出力します．
+
+### 例
+
+```cpp
+string s = "KnJ";
+print_str(s);
+```
+
+出力
+
+```
+KXJ(KKJ)
+```
