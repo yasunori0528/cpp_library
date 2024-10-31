@@ -9,7 +9,7 @@
 
 ### data
 
-`data` を $16$ 進数で見たときの $i$ 桁目に，カード $i (=$ `int_to_char(i)`$)$ の所持枚数を格納します．
+`data` を $16$ 進数で見たときの $i$ 桁目に，カード $i (=$ [`int_to_char(i)`](https://github.com/yasunori0528/cpp_library/blob/main/document/primeqk/card.md#int_to_char) $)$ の所持枚数を格納します．
 
 - `'0'` もカードとして扱えます．
 - 各カードにつき，管理できるのは $15$ 枚までです．
