@@ -9,7 +9,7 @@ mt19937 engine(seed_gen());
 
 #include "time.cpp"
 #include "math.cpp"
-#include "miller_labin.cpp"
+#include "miller_rabin.cpp"
 //#include "pollard_rho.cpp"
 //#include "trial_divition.cpp"
 #include "card.cpp"
