@@ -1,4 +1,4 @@
-# primeqk_expanded
+# primeqk/expanded_program
 
 必要なライブラリを展開して，1つのファイルで動くようにしてあるプログラムです．
 
