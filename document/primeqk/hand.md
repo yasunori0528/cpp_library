@@ -139,8 +139,16 @@ int h.mod11()
 
 ## max_natural
 
+```cpp
+bigint h.max_natural()
+```
+
 `h` で作ることのできる最大の自然数を返します．
 
 ## print
+
+```cpp
+void h.print()
+```
 
 `h` に含まれるカードを出力します．

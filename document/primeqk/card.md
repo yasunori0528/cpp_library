@@ -1,4 +1,4 @@
-# Card
+# card
 
 `X` に `0` ~ `K` を代入した状態を `a` ~ `n` で保持しています．
 
@@ -84,7 +84,7 @@ string int_to_str(bigint x)
 bigint str_to_int(string &s)
 ```
 
-`0123456789TJQKabcdefghijklmn` からなる文字列を数値に変換します．
+`"0123456789TJQKabcdefghijklmn"` からなる文字列を数値に変換します．
 
 ## print_str
 
@@ -94,7 +94,7 @@ void print_str(string &s)
 
 文字列を出力します．
 
-`a` ~ `n` が含まれる場合，代入前の文字列と代入後の文字列を出力します．
+`'a'` ~ `'n'` が含まれる場合，代入前の文字列と代入後の文字列を出力します．
 
 ### 例
 
