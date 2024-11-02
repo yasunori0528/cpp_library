@@ -4,6 +4,26 @@
 
 例えば，`KnJ` は `KXJ|X=K` を表します．
 
+## Code
+
+[card.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/card.cpp)
+
+## Depends on
+
+[math.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/math.cpp
+)
+
+## Required by
+
+[hand.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/hand.cpp
+)
+
+[max_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/max_prime.cpp
+)
+
+[min_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/min_prime.cpp
+)
+
 ## int_to_char
 
 ```cpp
