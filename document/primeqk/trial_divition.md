@@ -1,5 +1,11 @@
 # trial_divition
 
+## Code
+
+[trial_division.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/trial_division.cpp)
+
+## trial_divition
+
 ```cpp
 vector<T> trial_division(T x)
 ```

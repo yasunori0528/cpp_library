@@ -1,5 +1,23 @@
 # math
 
+## Code
+
+[math.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/math.cpp)
+
+## Required by
+
+[card.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/card.cpp)
+
+[hand.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/hand.cpp)
+
+[miller_rabin.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/miller_rabin.cpp)
+
+[pollard_rho.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/pollard_rho.cpp)
+
+[max_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/max_prime.cpp)
+
+[min_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/min_prime.cpp)
+
 ## bigint_to_int
 
 ```cpp

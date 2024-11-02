@@ -2,6 +2,22 @@
 
 手札を管理する class です．
 
+## Code
+
+[hand.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/hand.cpp)
+
+## Depends on
+
+[math.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/math.cpp)
+
+[card.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/card.cpp)
+
+## Required by
+
+[max_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/max_prime.cpp)
+
+[min_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/min_prime.cpp)
+
 ## メンバ変数
 
 - `uint64_t data`
