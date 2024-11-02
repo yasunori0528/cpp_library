@@ -19,12 +19,12 @@ mt19937 engine(seed_gen());
 
 int main() {
     string s; cin >> s;
-    int64_t t_start = get_time();
+    int64_t t_start = get_time_ns();
 
     cout << max_prime(hand(s)) << endl;
     cout << min_prime(hand(s)) << endl;
 
-    int64_t t_end = get_time();
+    int64_t t_end = get_time_ns();
     cout << fixed << setprecision(6);
     cout << (t_end - t_start) / 1'000'000'000.0 << "[s]" << endl;
 }
