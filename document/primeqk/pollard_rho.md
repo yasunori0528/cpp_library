@@ -1,5 +1,21 @@
 # pollard_rho
 
+## Code
+
+[pollard_rho.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/pollard_rho.cpp)
+
+## Depends on
+
+[math.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/math.cpp)
+
+[miller_rabin.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/miller_rabin.cpp)
+
+## Required by
+
+[max_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/max_prime.cpp)
+
+[min_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/min_prime.cpp)
+
 ```cpp
 vector<T> pollard_rho(T x)
 ```

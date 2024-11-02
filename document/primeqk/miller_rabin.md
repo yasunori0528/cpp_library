@@ -1,5 +1,21 @@
 # miller_rabin
 
+## Code
+
+[miller_rabin.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/miller_rabin.cpp)
+
+## Depends on
+
+[math.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/math.cpp)
+
+## Required by
+
+[pollard_rho.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/pollard_rho.cpp)
+
+[max_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/max_prime.cpp)
+
+[min_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/min_prime.cpp)
+
 ```cpp
 bool miller_rabin(bigint x, size_t k = 100)
 ```

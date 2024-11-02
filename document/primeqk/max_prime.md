@@ -3,6 +3,22 @@
 上位互換素数を探索する関数です．
 少し書き換えることで他の上位互換○○も探索できます．
 
+## Code
+
+[max_prime.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/max_prime.cpp)
+
+## Depends on
+
+[math.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/math.cpp)
+
+[card.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/card.cpp)
+
+[hand.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/hand.cpp)
+
+[miller_rabin.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/miller_rabin.cpp)
+
+[pollard_rho.cpp](https://github.com/yasunori0528/cpp_library/blob/main/library/primeqk/pollard_rho.cpp)
+
 ## max_prime
 
 ```cpp
