@@ -2,6 +2,10 @@
 
 私が普段使っているC++のライブラリです．
 
-```plantuml
-Bob->Alice : Hello!
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
 ```
