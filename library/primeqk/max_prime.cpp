@@ -2,19 +2,26 @@ bool max_number_test(bigint x) {
     return miller_rabin(x);
 }
 
+bool max_exist_candidate(bigint &x, hand &g) {
+    if(g.div25()) return false;
+
+    int r3 = g.mod3();
+    if(r3 >= 0 && (x + r3) % 3 == 0) return false;
+
+    auto [y, d] = g.max_natural();
+    int r11 = g.mod11();
+    if(r11 >= 0 && d % 2) r11 = 11 - r11;
+    if(r11 >= 0 && (x + r11) % 11 == 0) return false;
+
+    return true;
+}
+
 bigint max_potential(bigint x, hand g) {
     if(g.size() == 0) return x;
-    if(g.div25()) return 0;
+    if(!max_exist_candidate(x, g)) return 0;
 
     auto [y, d] = g.max_natural();
     bigint rtn = x * pow((bigint)10, (bigint)d) + y;
-    
-    int r3 = g.mod3();
-    if(r3 >= 0 && (x + r3) % 3 == 0) return 0;
-
-    int r11 = g.mod11();
-    if(r11 >= 0 && d % 2) r11 = 11 - r11;
-    if(r11 >= 0 && (x + r11) % 11 == 0) return 0;
 
     return rtn;
 }
