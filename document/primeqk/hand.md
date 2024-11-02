@@ -9,7 +9,7 @@
 
 ### data
 
-`data` を $16$ 進数で見たときの $i$ 桁目に，カード $i (=$ [`int_to_char(i)`](https://github.com/yasunori0528/cpp_library/blob/main/document/primeqk/card.md#int_to_char) $)$ の所持枚数を格納します．
+`data` を $16$ 進数で見たときの $i$ 桁目に，カード $i$ $(=$ [`int_to_char(i)`](https://github.com/yasunori0528/cpp_library/blob/main/document/primeqk/card.md#int_to_char) $)$ の所持枚数を格納します．
 
 - `'0'` もカードとして扱えます．
 - 各カードにつき，管理できるのは $15$ 枚までです．
@@ -148,7 +148,7 @@ pair<bigint,int> h.max_natural()
 ## min_natural
 
 ```cpp
-bigint h.min_natural()
+pair<bigint,int> h.min_natural()
 ```
 
 `h` をすべて使って作ることのできる非負整数のうち最小のものとその桁数 (leading zero を含む) の pair を返します．
