@@ -24,7 +24,7 @@ int main() {
 
     //cout << max_prime(hand(s)) << endl;
     //cout << min_prime(hand(s)) << endl;
-    search_composite(hand(DECK), 7);
+    search_composite(hand(DECK), 9);
 
     int64_t t_end = get_time_ns();
     cout << fixed << setprecision(6);

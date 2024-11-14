@@ -154,6 +154,16 @@ public:
         return make_pair(rtn, d);
     }
 
+    //sを出せるかどうか (s = [0-9*^]*) TBW
+    bool pqkable(string &s) {
+        return true;
+    }
+
+    //sの出し方を全列挙 (s = [0-9*^]*) TBW
+    vector<string> way_to_play(string &s) {
+        return vector<string>();
+    }
+
     void print() {
         for(int i = 0; i <= 14; i++) {
             for(int j = 0; j < count(i); j++) {

@@ -73,7 +73,7 @@ vector<vector<expression>> calc_pow_list(int max_pd,int d, int max_d, hand h, ve
                 string pe_str = p_str;
                 if(a > 1) pe_str += "^" + e.s;
                 expression pe(pa, pe_str, p_str.size() + e.d);
-                if(pe.d + pa_digit <= max_d) rtn[pe.d].push_back(pe);
+                if(pe.d + pa_digit <= max_d && h.pqkable(pe_str)) rtn[pe.d].push_back(pe);
             }
         }
     }
@@ -97,4 +97,33 @@ void search_composite(hand h, int d) {
     vector<vector<expression>> exp_list = calc_exp_list(max_exp); //exp_list[i] : 大きさがiの指数部の列
 
     vector<vector<expression>> pow_list = calc_pow_list(d / 2, d, max_d, h, exp_list);
+
+    //大きい素数を使わないもののうち, 素因数場がi桁のものを全探索
+    for(int i = 2; i <= d; i++) {
+        // "*"が入る位置をbit全探索
+        for(int j = 0; j < (1 << (i - 1)); j++) {
+            vector<int> d_list = {1};//冪の桁数の列
+            for(int k = 0; k < i-1; k++) {
+                if(j>>k&1) {
+                    d_list.push_back(1);
+                }
+                else {
+                    d_list[d_list.size()-1]++;
+                }
+            }
+            
+            //d_listが単調増加でなければcontinue
+            bool is_sorted = true;
+            for(int k = 0; k < int(d_list.size())-1; k++) {
+                if(d_list[k] > d_list[k+1]) {
+                    is_sorted = false;
+                    break;
+                }
+            }
+            if(!is_sorted) continue;
+
+            //TBW
+
+        }
+    }
 }
