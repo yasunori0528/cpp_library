@@ -6,7 +6,7 @@ public:
         sz = 0;
     }
 
-    hand(string &s) {
+    hand(string s) {
         data = 0;
         sz = 0;
         for(char &c : s) {

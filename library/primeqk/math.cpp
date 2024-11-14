@@ -34,7 +34,7 @@ bool chmin(T &a, const T& b) {
 }
 
 template <typename T>
-T floor(T x, T y){
+T floor(T x, T y) {
     if(y < 0){
         x *= -1;
         y *= -1;
@@ -45,7 +45,7 @@ T floor(T x, T y){
 }
 
 template <typename T>
-T ceil(T x, T y){
+T ceil(T x, T y) {
     if(y < 0){
         x *= -1;
         y *= -1;
@@ -56,7 +56,7 @@ T ceil(T x, T y){
     return x/y;
 }
 
-bigint pow(bigint x, bigint y){
+bigint pow(bigint x, bigint y) {
     assert(y >= 0);
     assert(!(x == 0 && y == 0));
 
@@ -93,7 +93,7 @@ bigint pow(bigint x, bigint y){
     return pow_list[0].first;
 }
 
-bigint pow_mod(bigint x, bigint y, bigint p){
+bigint pow_mod(bigint x, bigint y, bigint p) {
     assert(y >= 0);
     x %= p;
 
@@ -130,8 +130,17 @@ bigint pow_mod(bigint x, bigint y, bigint p){
     return pow_list[0].first;
 }
 
-int digit(bigint n){
+int digit(bigint n) {
     if(n == 0) return 0;
     if(n < 10) return 1;
     else return digit(n/10)+1;
+}
+
+int log2(bigint n) {
+    int rtn = 0;
+    while(n > 1) {
+        n /= 2;
+        rtn++;
+    }
+    return rtn;
 }
