@@ -8,7 +8,7 @@ struct expression {
     expression(bigint val_, string s_, int d_) : val(val_), s(s_), d(d_) {}
 
     void print() {
-        cout << "(" << val << ", " << s << ", " << d << ")";
+        cout << s << " = " << val << ", " << d;
     }
 };
 
@@ -64,12 +64,17 @@ vector<vector<expression>> calc_exp_list(int max_exp) {
 }
 
 // max_pd 桁以下の素数を底にもつ冪のうち，消費桁数が d 以下で，手札 h で使いうるもの (max_d : hの桁数)
-vector<vector<expression>> calc_pow_list(int max_pd,int d, int max_d, hand h, vector<vector<expression>> &exp_list) {
+vector<vector<expression>> calc_pow_list(int max_pd, int d, int max_d, hand h, vector<vector<expression>> &exp_list) {
+    //cout << "calc_pow_list(int " << max_pd << ", int " << d << ", int " << max_d << ", hand h, vector<vector<expression>> &exp_list)" << endl;
+    //chmin(max_pd, (max_d - 1) / 2);
     vector<vector<expression>> rtn(max_d+1);
     for(bigint p = 2; p < pow(bigint(10), bigint(max_pd)); p++) {
-        if(!miller_rabin(p)) continue;
         int p_digit = digit(p);
         string p_str = int_to_str(p);
+        if(!h.pqkable(p_str)) continue;
+        if(!miller_rabin(p)) continue;
+
+        if(engine()%1000==0) cout << p << endl;
         bigint pa = 1;
         for(int a = 1; a < int(exp_list.size()); a++) {
             pa *= p;
@@ -79,6 +84,7 @@ vector<vector<expression>> calc_pow_list(int max_pd,int d, int max_d, hand h, ve
                 string pe_str = p_str;
                 if(a > 1) pe_str += "^" + e.s;
                 expression pe(pa, pe_str, p_str.size() + e.d);
+                //pe.print(); cout << endl;
                 if(pe.d + pa_digit <= max_d && h.pqkable(pe_str)) rtn[pe.d].push_back(pe);
             }
         }
@@ -97,15 +103,46 @@ void search_composite(hand h, int d) {
     //3. 2.の積で表される合成数を全探索
     //4. d/2桁より大きい素数を使う合成数を全探索(d/2桁より大きい素数は1つしか使えないので素数表を持つ必要がない)
 
-    int max_d = h.max_natural().second;//手札の桁数
-    int max_exp = max_d * 4;//指数部の上界
+    int max_d = h.max_natural().second; //手札の桁数
+    chmin(d, max_d - 1);
+    int max_exp = max_d * 4; //指数部の上界
+    int d_big = min(d / 2 + 1, (max_d + 5) / 4); //1つしか使えない素数の桁数の下限
+    int d_small = d - d_big; //大きい素数を使うときの残りの桁数の上限
+
+    //残りの最大値
+    //素因数場 : (maxd - d_big - 1)桁 = (d_big)桁 * 1桁
+    //大きさ : 10 ^ (maxd - d_big - 1) = 10 ^ (d_big - 1) * 10 ^ (maxd - d_big * 2)
+    bigint small_max = 0;
+    if(max_d - d_big * 2 >= 0) small_max = pow((bigint)10, max_d - d_big * 2);
 
     vector<vector<expression>> exp_list = calc_exp_list(max_exp); //exp_list[i] : 大きさがiの指数部の列
+    vector<vector<expression>> pow_list = calc_pow_list(d_big - 1, d, max_d, h, exp_list); //pow_list[i] : 素因数場の桁数がiの冪
+    vector<vector<expression>> small_comp_list(d_small+1); //素因数場の桁数が d-(d/2+1) 桁以下の合成数のリスト． 大きい素数を使うときに再利用する
+    small_comp_list[0].push_back(EXP1);
 
-    vector<vector<expression>> pow_list = calc_pow_list(d / 2, d, max_d, h, exp_list);
+    /*cout << "exp_list" << endl;
+    for(auto i : exp_list) {
+        for(auto j : i) {
+            j.print();
+            cout << " ";
+        }
+        cout << endl;
+    }
+
+    cout << "pow_list" << endl;
+    for(auto i : pow_list) {
+        for(auto j : i) {
+            j.print();
+            cout << " ";
+        }
+        cout << endl;
+    }*/
+
+    expression best_comp = EXP0;
+    int cnt = 0;
 
     //大きい素数を使わないもののうち, 素因数場がi桁のものを全探索
-    for(int i = 2; i <= d; i++) {
+    for(int i = 1; i <= d; i++) {
         // "*"が入る位置をbit全探索
         for(int j = 0; j < (1 << (i - 1)); j++) {
             vector<int> d_list = {1};//冪の桁数の列
@@ -130,12 +167,25 @@ void search_composite(hand h, int d) {
             }
             if(!is_sorted) continue;
 
-            //for(int k : d_list) cout << k << " ";
-            //cout << endl;
+            cout << string(4, '=');
+            for(int k : d_list) cout << k << " ";
+            cout << string(4, '=');
+            cout << endl;
 
             vector<int> loop(n, 0);
             vector<int> loop_max(n);
             for(int k = 0; k < n; k++) loop_max[k] = pow_list[d_list[k]].size();
+
+            int min_pow_list_size = loop_max[0];
+            for(int k = 0; k < n; k++) chmin(min_pow_list_size, loop_max[k]);
+
+            if(min_pow_list_size == 0) continue;
+
+            bigint min_val = 1;
+            for(int k = 0; k < n; k++) {
+                min_val *= pow_list[d_list[k]][0].val;
+            }
+            if(digit(min_val) + d > max_d) continue;
 
             bool b = true;
             while(b) {
@@ -148,8 +198,14 @@ void search_composite(hand h, int d) {
                 bool b2 = (c.d + int(int_to_str(c.val).size()) <= max_d);
 
                 if(b2) {
-                    string s = int_to_str(c.val) + "=" + c.s;
-                    if(h.pqkable(s)) cout << s << endl;
+                    if(c.d <= d_small && c.val < small_max) small_comp_list[c.d].push_back(c);
+                    string c_str = int_to_str(c.val);
+                    string s = c_str + "=" + c.s;
+                    if(c_str != c.s && h.pqkable(s)) {
+                        cout << s << endl;
+                        chmax(best_comp, c);
+                        cnt++;
+                    }
                 }
                 
 
@@ -169,4 +225,62 @@ void search_composite(hand h, int d) {
             }
         }
     }
+
+    cout << "finish small" << endl;
+
+    for(auto &v : small_comp_list) {
+        if(v.size() > 0) {
+            sort(v.begin(), v.end());
+        }
+    }
+
+    //大きい素数を使うもの
+    int a_max = exp_list.size();
+    for(bigint p = pow(10, d_big - 1) + 1; p < pow(10, d - 1); p += 2) {
+        string p_str = int_to_str(p);
+        if(!h.pqkable(p_str)) continue;
+        if(!miller_rabin(p)) continue;
+        if(int(p_str.size()) * 2 + 1 > max_d) break;
+        if(engine()%1000 == 0) cout << "p : " << p << endl;
+
+        bigint pa = 1;
+        for(int a = 1; a < a_max; a++) {
+            pa *= p;
+            if(pa > pow((bigint)10, max_d)) break;
+            for(expression e : exp_list[a]) {
+                string pe_str = p_str;
+                if(a > 1) pe_str += "^" + e.s;
+                expression pe(pa, pe_str, p_str.size() + e.d);
+                if(digit(pe.val) + int(p_str.size()) > max_d) break;
+
+                for(int i = 0; i <= d - pe.d; i++) {
+                    if(small_comp_list[i].size()) {
+                        bigint min_val = pe.val * small_comp_list[i][0].val;
+                        if(digit(min_val) + i + pe.d > max_d) break;
+                    }
+                    
+                    for(expression small_c : small_comp_list[i]) {
+                        expression c = small_c * pe;
+
+                        bool b2 = (c.d + int(int_to_str(c.val).size()) <= max_d);
+
+                        if(b2) {
+                            string c_str = int_to_str(c.val);
+                            string s = c_str + "=" + c.s;
+                            if(c_str != c.s && h.pqkable(s)) {
+                                cout << s << endl;
+                                chmax(best_comp, c);
+                                cnt++;
+                            }
+                        }
+                        else break;
+                    }
+                }
+            }
+        }
+    }
+
+    best_comp.print();
+    cout << endl;
+    cout << cnt << endl;
 }
