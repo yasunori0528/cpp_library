@@ -3,6 +3,8 @@ struct expression {
     string s;
     int d;
 
+    expression() {}
+
     expression(bigint val_, string s_, int d_) : val(val_), s(s_), d(d_) {}
 
     void print() {
@@ -10,8 +12,12 @@ struct expression {
     }
 };
 
+const expression EXP0(0, "", 0); //積の単位元
+const expression EXP1(1, "", 0); //冪の単位元
+
 expression operator*(expression x, expression y) {
     if(y.d == 0) return x;
+    if(x.d == 0) return y;
     expression rtn(x.val * y.val, x.s + "*" + y.s, x.d + y.d);
     return rtn;
 }
@@ -91,7 +97,7 @@ void search_composite(hand h, int d) {
     //3. 2.の積で表される合成数を全探索
     //4. d/2桁より大きい素数を使う合成数を全探索(d/2桁より大きい素数は1つしか使えないので素数表を持つ必要がない)
 
-    int max_d = h.max_natural().second;
+    int max_d = h.max_natural().second;//手札の桁数
     int max_exp = max_d * 4;//指数部の上界
 
     vector<vector<expression>> exp_list = calc_exp_list(max_exp); //exp_list[i] : 大きさがiの指数部の列
@@ -111,19 +117,56 @@ void search_composite(hand h, int d) {
                     d_list[d_list.size()-1]++;
                 }
             }
+
+            int n = d_list.size();
             
-            //d_listが単調増加でなければcontinue
+            //d_listが単調減少でなければcontinue
             bool is_sorted = true;
-            for(int k = 0; k < int(d_list.size())-1; k++) {
-                if(d_list[k] > d_list[k+1]) {
+            for(int k = 0; k < n-1; k++) {
+                if(d_list[k] < d_list[k+1]) {
                     is_sorted = false;
                     break;
                 }
             }
             if(!is_sorted) continue;
 
-            //TBW
+            //for(int k : d_list) cout << k << " ";
+            //cout << endl;
 
+            vector<int> loop(n, 0);
+            vector<int> loop_max(n);
+            for(int k = 0; k < n; k++) loop_max[k] = pow_list[d_list[k]].size();
+
+            bool b = true;
+            while(b) {
+                expression c = EXP1;
+                //累積和を持ったほうが速い(TBW)
+                for(int k = 0; k < n; k++) {
+                    c = pow_list[d_list[k]][loop[k]] * c;
+                }
+
+                bool b2 = (c.d + int(int_to_str(c.val).size()) <= max_d);
+
+                if(b2) {
+                    string s = int_to_str(c.val) + "=" + c.s;
+                    if(h.pqkable(s)) cout << s << endl;
+                }
+                
+
+                b = false;
+                for(int k = 0; k < n; k++) {
+                    if(!b2 && k == 0) continue;
+                    if(loop[k] < loop_max[k] - 1) {
+                        b = true;
+                        loop[k]++;
+                        for(int l = k-1; l >= 0; l--) {
+                            if(d_list[l] == d_list[l+1]) loop[l] = loop[l+1];
+                            else loop[l] = 0;
+                        }
+                        break;
+                    }
+                }
+            }
         }
     }
 }
