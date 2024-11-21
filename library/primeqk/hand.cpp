@@ -6,7 +6,7 @@ public:
         sz = 0;
     }
 
-    hand(string &s) {
+    hand(string s) {
         data = 0;
         sz = 0;
         for(char &c : s) {
@@ -152,6 +152,16 @@ public:
         natural_sub(rtn, d, 9, count(9));
         
         return make_pair(rtn, d);
+    }
+
+    //sを出せるかどうか (s = [0-9*^]*) TBW
+    bool pqkable(string &s) {
+        return true;
+    }
+
+    //sの出し方を全列挙 (s = [0-9*^]*) TBW
+    vector<string> way_to_play(string &s) {
+        return vector<string>();
     }
 
     void print() {
