@@ -19,12 +19,16 @@ mt19937 engine(seed_gen());
 #include "search_composite.cpp"
 
 int main() {
-    //string s; cin >> s;
+    //int n; cin >> n;
+    string s; cin >> s;
+
     int64_t t_start = get_time_ns();
 
     //cout << max_prime(hand(s)) << endl;
     //cout << min_prime(hand(s)) << endl;
-    search_composite(hand(DECK), 4);
+    
+    //search_composite(hand(DECK), n);
+    search_composite(hand(s), 72);
 
     int64_t t_end = get_time_ns();
     cout << fixed << setprecision(6);
