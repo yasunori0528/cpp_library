@@ -73,6 +73,7 @@ struct action {
             else {
                 if(s[r-1] == ']') {
                     k = s.substr(r-3, 2);
+                    b = "T";
                     r -= 4;
                 }
 
@@ -86,11 +87,12 @@ struct action {
                     b = "T";
                 }
 
-                int z = search(s, l, r, '=');
-                if(z >= 0) {
+                int z1 = search(s, l, r, '*');
+                int z2 = search(s, l, r, '^');
+                if(z1 >= 0 || z2 >= 0) {
                     k = "C";
                 }
-                else {
+                else if(k == "") {
                     k = "P";
                 }
 
