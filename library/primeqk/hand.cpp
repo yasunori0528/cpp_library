@@ -159,6 +159,7 @@ public:
         if(hand(s).max_natural().second > max_natural().second) return false;
         
         //sを 0,1,2,3,4,5,6,7,8,9,10,11,12,13,110,111,112,113 に分割する．
+        s.push_back('=');
         int cnt = 0;
         vector<int> vs(18, 0);
         for(char c : s) {
