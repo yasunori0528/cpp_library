@@ -154,7 +154,7 @@ public:
         return make_pair(rtn, d);
     }
 
-    //sを出せるかどうか (s = [0-9*^=]*) TBW
+    //sを出せるかどうか (s = [0-9*^=]*)
     bool pqkable(string &s) {
         if(hand(s).max_natural().second > max_natural().second) return false;
         
