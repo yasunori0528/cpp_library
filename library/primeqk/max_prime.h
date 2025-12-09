@@ -1,3 +1,5 @@
+#include "head.h"
+
 bool max_number_test(bigint x) {
     return miller_rabin(x);
 }

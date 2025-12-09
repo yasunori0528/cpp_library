@@ -1,3 +1,5 @@
+#include "head.h"
+
 struct expression {
     bigint val;
     string s;

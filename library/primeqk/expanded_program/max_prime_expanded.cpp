@@ -1,8 +1,4 @@
-#include <bits/stdc++.h>
-#include <gmp.h>
-#include <gmpxx.h>
-using namespace std;
-using bigint = mpz_class;
+#include "../head.h"
 
 random_device seed_gen;
 mt19937 engine(seed_gen());
@@ -13,19 +9,6 @@ int64_t get_time(){
     clock_gettime(CLOCK_MONOTONIC, &t);
     return t.tv_sec * int64_t(1'000'000'000) + t.tv_nsec;
 }
-
-template<typename T>
-uint bigint_to_int(T x);
-
-template<>
-uint bigint_to_int(mpz_class x) {
-    return x.get_ui();
-}
-
-/*template<>
-uint bigint_to_int(boost::multiprecision::cpp_int x) {
-    return static_cast<uint>(x);
-}*/
 
 template <typename T>
 bool chmax(T &a, const T& b) {

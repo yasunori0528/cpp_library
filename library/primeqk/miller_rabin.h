@@ -1,3 +1,5 @@
+#include "head.h"
+
 bool miller_rabin(bigint x, size_t k = 100){
     if(x <= 1) return false;
     if(x == 2) return true;

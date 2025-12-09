@@ -1,3 +1,5 @@
+#include "head.h"
+
 template<typename T>
 void trial_division_sub(T &x, T p, vector<T> &rtn){
     while(x % p == 0){

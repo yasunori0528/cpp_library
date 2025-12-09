@@ -1,7 +1,4 @@
-#include <bits/stdc++.h>
-#include <boost/multiprecision/cpp_int.hpp>
-using namespace std;
-using bigint = boost::multiprecision::cpp_int;
+#include "../head.h"
 
 random_device seed_gen;
 mt19937 engine(seed_gen());
@@ -11,19 +8,6 @@ int64_t get_time(){
     struct::timespec t;
     clock_gettime(CLOCK_MONOTONIC, &t);
     return t.tv_sec * int64_t(1'000'000'000) + t.tv_nsec;
-}
-
-template<typename T>
-uint bigint_to_int(T x);
-
-/*template<>
-uint bigint_to_int(mpz_class x) {
-    return x.get_ui();
-}*/
-
-template<>
-uint bigint_to_int(boost::multiprecision::cpp_int x) {
-    return static_cast<uint>(x);
 }
 
 template <typename T>

@@ -1,3 +1,5 @@
+#include "head.h"
+
 const int HAND_SEGMENT_WIDTH = 4;
 class hand {
 public:

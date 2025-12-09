@@ -1,3 +1,5 @@
+#include "head.h"
+
 //カードの種類
 //'a'~'n' は 'X' に 0 ~ 13 を代入した状態を指す.
 const string ALPHABET = "0123456789TJQKXabcdefghijklmn";

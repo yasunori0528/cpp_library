@@ -1,3 +1,5 @@
+#include "head.h"
+
 template<typename T>
 T next_pseudorand(T x, T p, T c){
     return (x * x + c) % p;
