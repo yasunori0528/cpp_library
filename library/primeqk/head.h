@@ -27,7 +27,7 @@
 
 
 
-#define USE_GMP 0
+#define USE_GMP 1
 #define USE_BOOST 0
 
 #if USE_GMP

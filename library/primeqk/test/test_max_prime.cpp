@@ -14,6 +14,9 @@ mt19937 engine(seed_gen());
 #include "../min_prime.h"
 #include "../search_composite.h"
 
+#define SKIP_MIN_PRIME 1
+#define SKIP_SMALL_TEST 1
+
 using ans_type = pair<bigint, bigint>;
 string s;
 
@@ -30,8 +33,10 @@ void output_input() {
 
 ans_type solve() {
 	bigint ans_max = max_prime(hand(s));
+#if not SKIP_MIN_PRIME
 	bigint ans_min = min_prime(hand(s));
-	return { ans_max, ans_min };
+#endif
+	return { ans_max, 0 };
 }
 
 ans_type simple_solve() {
@@ -111,6 +116,9 @@ void test_with_simple_solve() {
 		//output_input();
 		ans_type ans = solve();
 		ans_type ans_simple = simple_solve();
+#if  SKIP_MIN_PRIME
+		ans_simple.second = 0;
+#endif
 
 		if (ans != ans_simple) {
 			cout << "input:" << endl;
@@ -139,7 +147,9 @@ void calc_time_big_case(int n) {
 
 int main() {
 	cout << fixed << setprecision(6);
+#if not SKIP_SMALL_TEST
 	test_with_simple_solve();
+#endif
 	calc_time_big_case(18);
 	calc_time_big_case(36);
 	calc_time_big_case(54);
