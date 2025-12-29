@@ -35,7 +35,7 @@ void output_input() {
 
 ans_type solve() {
 	bigint ans_max = max_prime(hand(s));
-	bigint ans_min;
+	bigint ans_min = 0;
 #if not SKIP_MIN_PRIME
 	ans_min = min_prime(hand(s));
 #endif
