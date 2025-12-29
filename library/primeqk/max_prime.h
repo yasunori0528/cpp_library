@@ -1,68 +1,68 @@
 #include "head.h"
 
 bool max_number_test(bigint x) {
-    return miller_rabin(x);
+	return miller_rabin(x);
 }
 
-bool max_exist_candidate(bigint &x, hand &g) {
-    if(g.div25()) return false;
+bool max_exist_candidate(bigint& x, hand& g) {
+	if (g.div25()) return false;
 
-    int r3 = g.mod3();
-    if(r3 >= 0 && (x + r3) % 3 == 0) return false;
+	int r3 = g.mod3();
+	if (r3 >= 0 && (x + r3) % 3 == 0) return false;
 
-    auto [y, d] = g.max_natural();
-    int r11 = g.mod11();
-    if(r11 >= 0 && d % 2) r11 = 11 - r11;
-    if(r11 >= 0 && (x + r11) % 11 == 0) return false;
+	auto [y, d] = g.max_natural();
+	int r11 = g.mod11();
+	if (r11 >= 0 && d % 2) r11 = 11 - r11;
+	if (r11 >= 0 && (x + r11) % 11 == 0) return false;
 
-    return true;
+	return true;
 }
 
 bigint max_potential(bigint x, hand g) {
-    if(g.size() == 0) return x;
-    if(!max_exist_candidate(x, g)) return 0;
+	if (g.size() == 0) return x;
+	if (!max_exist_candidate(x, g)) return 0;
 
-    auto [y, d] = g.max_natural();
-    bigint rtn = x * pow((bigint)10, (bigint)d) + y;
+	auto [y, d] = g.max_natural();
+	bigint rtn = x * pow((bigint)10, (bigint)d) + y;
 
-    return rtn;
+	return rtn;
 }
 
 bigint max_prime(hand h) {
-    set<tuple<bigint, bigint, hand>> Q;
-    Q.insert(make_tuple(h.max_natural().first, bigint(0), h));
+	set<tuple<bigint, bigint, hand>> Q;
+	Q.insert(make_tuple(h.max_natural().first, bigint(0), h));
 
-    while(Q.size()) {
-        auto itr = Q.rbegin();
-        auto [max_x, x, g] = *itr;
-        Q.erase(*itr);
+	while (Q.size()) {
+		auto itr = Q.rbegin();
+		auto [max_x, x, g] = *itr;
+		Q.erase(*itr);
 
-        if(g.size() == 0) {
-            //if(engine() % 10000 == 0) cout << x << endl;
-            if(max_number_test(x)) return x;
-            else continue;
-        }
+		if (g.size() == 0) {
+			//if(engine() % 10000 == 0) cout << x << endl;
+			if (max_number_test(x)) return x;
+			else continue;
+		}
 
-        for(int i = 0; i <= 13; i++) {
-            if(i == 0 && x == 0) continue;
+		for (int i = 0; i <= 13; i++) {
+			if (i == 0 && x == 0) continue;
 
-            bigint next_x;
-            if(i < 10) next_x = x * 10 + i;
-            else next_x = x * 100 + i;
+			bigint next_x;
+			if (i < 10) next_x = x * 10 + i;
+			else next_x = x * 100 + i;
 
-            hand next_g = g;
-            if(g.count(i)) {
-                next_g.discard(i);
-                bigint next_max_x = max_potential(next_x, next_g);
-                if(next_max_x > 0) Q.insert(make_tuple(next_max_x, next_x, next_g));
-            }
-            else if(g.count(14)) {
-                next_g.discard(14);
-                bigint next_max_x = max_potential(next_x, next_g);
-                if(next_max_x > 0) Q.insert(make_tuple(next_max_x, next_x, next_g));
-            }
-        }
-    }
+			hand next_g = g;
+			if (g.count(i)) {
+				next_g.discard(i);
+				bigint next_max_x = max_potential(next_x, next_g);
+				if (next_max_x > 0) Q.insert(make_tuple(next_max_x, next_x, next_g));
+			}
+			else if (g.count(14)) {
+				next_g.discard(14);
+				bigint next_max_x = max_potential(next_x, next_g);
+				if (next_max_x > 0) Q.insert(make_tuple(next_max_x, next_x, next_g));
+			}
+		}
+	}
 
-    return 0;
+	return 0;
 }
