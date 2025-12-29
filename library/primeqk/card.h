@@ -42,7 +42,7 @@ bool is_joker(char &c) {
 
 string int_to_str(bigint x) {
     string s;
-    while(x) {
+    while(x > 0) {
         bigint r = x % 10;
         s.push_back('0' + bigint_to_int(r));
         x /= 10;

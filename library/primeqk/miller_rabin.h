@@ -12,10 +12,9 @@ bool miller_rabin(bigint x, size_t k = 100) {
 		s++;
 	}
 
-	if (x - 1 < k) k = bigint_to_int(x) - 1;
+	if (x - 1 < bigint(static_cast<unsigned int>(k))) k = bigint_to_int(x) - 1;
 
 	set<bigint> A;
-
 	{
 		bigint a_max = x - 1;
 		while (A.size() < k) {

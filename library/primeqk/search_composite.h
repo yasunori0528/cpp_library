@@ -238,7 +238,7 @@ void search_composite(hand h, int d) {
 
     //大きい素数を使うもの
     int a_max = exp_list.size();
-    for(bigint p = pow(10, d_big - 1) + 1; p < pow(10, d - 1); p += 2) {
+    for(bigint p = bigint(pow(10, d_big - 1)) + 1; p < bigint(pow(10, d - 1)); p += 2) {
         string p_str = int_to_str(p);
         if(!h.pqkable(p_str)) continue;
         if(!miller_rabin(p)) continue;

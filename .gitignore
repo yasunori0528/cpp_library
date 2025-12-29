@@ -1,0 +1,4 @@
+library/vcpkg/vcpkg
+library/primeqk/.vs
+library/primeqk/out
+library/primeqk/CMakeSettings.json

@@ -44,17 +44,25 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 
 # パス設定
 set(GMP_DIR "")
+set(BOOST_PATH "")
 #set(MPI_DIR "")
 
 # インクルード
 target_include_directories(${PROJECT_NAME} PRIVATE
     "${GMP_DIR}/include"
+    "${BOOST_PATH}"
     #"${MPI_DIR}/include"
 )
 
-# リンク
+# リンクディレクトリ
+target_link_directories(${PROJECT_NAME} PRIVATE
+    "${GMP_DIR}/lib"
+)
+
+# リンクライブラリ
 target_link_libraries(${PROJECT_NAME} PRIVATE
     gmp
+    gmpxx
     #$<$<PLATFORM_ID:Windows>:${MPI_DIR}/lib/release/impi.lib>
     #$<$<PLATFORM_ID:Linux>:${MPI_DIR}/lib/release/libmpi.a>
     #$<$<PLATFORM_ID:Linux>:${MPI_DIR}/lib/libmpicxx.a>
