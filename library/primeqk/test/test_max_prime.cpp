@@ -110,6 +110,16 @@ void output(ans_type x) {
 	cout << a << " " << b << endl;
 }
 
+void test() {
+	input(5);
+	ans_type ans = solve();
+	ans_type ans_simple = simple_solve();
+
+	cout << "input:    " << s << endl;
+	cout << "output:   " << ans.first << endl;
+	cout << "expected: " << ans_simple.first << endl;
+}
+
 void test_with_simple_solve() {
 	for (int i = 0; i < 1024; i++) {
 		input(engine() % 7 + 1);
@@ -147,12 +157,18 @@ void calc_time_big_case(int n) {
 
 int main() {
 	cout << fixed << setprecision(6);
+	test();
 #if not SKIP_SMALL_TEST
 	test_with_simple_solve();
 #endif
-	calc_time_big_case(18);
-	calc_time_big_case(36);
-	calc_time_big_case(54);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
+	calc_time_big_case(80);
 }
 //O(n^3)
 //test : O(n!*n)
