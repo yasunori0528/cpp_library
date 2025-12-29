@@ -1,7 +1,7 @@
 #include "head.h"
 
 bool max_number_test(bigint x) {
-	return miller_rabin(x);
+	return miller_rabin(x, 50);
 }
 
 bool max_exist_candidate(bigint& x, hand& g) {

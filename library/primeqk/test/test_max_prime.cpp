@@ -23,7 +23,7 @@ string s;
 void input(int n) {
 	s.clear();
 	for (int i = 0; i < n; i++) {
-		s.push_back(ALPHABET[engine() % 27 / 2 + 1]);
+		s.push_back(ALPHABET[engine() % 27 / 2/* + 1*/]);
 	}
 }
 
