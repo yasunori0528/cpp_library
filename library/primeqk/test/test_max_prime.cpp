@@ -14,6 +14,8 @@ mt19937 engine(seed_gen());
 #include "../min_prime.h"
 #include "../search_composite.h"
 
+#include <omp.h>
+
 #define SKIP_MIN_PRIME 1
 #define SKIP_SMALL_TEST 1
 
@@ -157,6 +159,8 @@ void calc_time_big_case(int n) {
 }
 
 int main() {
+	omp_set_num_threads(16);
+
 	cout << fixed << setprecision(6);
 	test();
 #if not SKIP_SMALL_TEST

@@ -28,7 +28,7 @@ bigint max_potential(bigint x, hand g) {
 	return rtn;
 }
 
-bigint max_prime(hand h) {
+bigint max_prime_sequential(hand h) {
 	set<tuple<bigint, bigint, hand>> Q;
 	Q.insert(make_tuple(h.max_natural().first, bigint(0), h));
 
@@ -65,4 +65,105 @@ bigint max_prime(hand h) {
 	}
 
 	return 0;
+}
+
+// TODO: Xを含むと結果が正しくないバグあり
+bigint max_prime(hand h) {
+
+	set<tuple<bigint, bigint, hand>> Q;
+	Q.insert(make_tuple(h.max_natural().first, bigint(0), h));
+
+	bool found = false;
+	bigint result = 0;
+
+	int active_threads = 0;
+
+#pragma omp parallel shared(Q, found, result, active_threads)
+	{
+		while (true) {
+			tuple<bigint, bigint, hand> task;
+			bool has_task = false;
+
+			// Qから要素を取得
+#pragma omp critical(q_access)
+			{
+				if (!Q.empty()) {
+					auto itr = Q.rbegin();
+					task = *itr;
+					Q.erase(*itr);
+					has_task = true;
+					active_threads++;
+					//cout << "active_threads=" << active_threads << endl;
+				}
+				else {
+					has_task = false;
+				}
+			}
+
+			// Qが空かつ全スレッドがアイドルなら終了
+			if (!has_task) {
+				if (active_threads == 0) {
+					break;
+				}
+				continue;
+			}
+
+			auto [max_x, x, g] = task;
+
+			// handを使い切ったケース
+			if (g.size() == 0) {
+				if (max_number_test(x)) {
+#pragma omp critical(result_update)
+					{
+						found = true;
+						if (x >= result) result = x;
+					}
+				}
+#pragma omp critical(q_access)
+				{
+					active_threads--;
+				}
+				if (found) break;
+				continue;
+			}
+
+			// 次の状態を生成
+			for (int i = 0; i <= 13; i++) {
+				if (i == 0 && x == 0) continue;
+
+				bigint next_x;
+				if (i < 10) next_x = x * 10 + i;
+				else next_x = x * 100 + i;
+
+				hand next_g = g;
+				if (g.count(i)) {
+					next_g.discard(i);
+					bigint next_max_x = max_potential(next_x, next_g);
+					if (next_max_x > 0) {
+#pragma omp critical(q_access)
+						{
+							Q.insert(make_tuple(next_max_x, next_x, next_g));
+						}
+					}
+				}
+				else if (g.count(14)) {
+					next_g.discard(14);
+					bigint next_max_x = max_potential(next_x, next_g);
+					if (next_max_x > 0) {
+#pragma omp critical(q_access)
+						{
+							Q.insert(make_tuple(next_max_x, next_x, next_g));
+						}
+					}
+				}
+			}
+
+#pragma omp critical(q_access)
+			{
+				active_threads--;
+			}
+		}
+	}
+
+	if (found) return result;
 }
