@@ -43,8 +43,8 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 )
 
 # パス設定
-set(GMP_DIR "")
-set(BOOST_PATH "")
+set(GMP_DIR "D:/_others/prim/library/vcpkg/vcpkg/installed/x64-windows") # FIXME: 各自パス設定
+set(BOOST_PATH "C:/Users/0108409038/Documents/Visual Studio 2022/boost_1_82_0") # FIXME: 各自パス設定
 #set(MPI_DIR "")
 
 # インクルード
