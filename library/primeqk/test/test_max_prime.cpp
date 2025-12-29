@@ -33,10 +33,11 @@ void output_input() {
 
 ans_type solve() {
 	bigint ans_max = max_prime(hand(s));
+	bigint ans_min;
 #if not SKIP_MIN_PRIME
-	bigint ans_min = min_prime(hand(s));
+	ans_min = min_prime(hand(s));
 #endif
-	return { ans_max, 0 };
+	return { ans_max, ans_min };
 }
 
 ans_type simple_solve() {
