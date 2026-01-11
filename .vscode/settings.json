@@ -18,7 +18,8 @@
         "ostream": "cpp",
         "iostream": "cpp",
         "functional": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "random": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
