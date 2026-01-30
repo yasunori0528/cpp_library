@@ -6,7 +6,7 @@
 #include "Math.cpp"
 using namespace std;
 
-// 符号なし128桁固定長十進整数
+// 符号なし固定長十進整数
 template<uint8_t BASE, uint8_t MAX_DIGIT>
 class Decimal {
 private:
