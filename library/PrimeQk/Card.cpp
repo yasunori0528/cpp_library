@@ -2,11 +2,10 @@
 // date : 2026/01/30
 // author : yasunori
 
-#include <bits/stdc++.h>
-#include <gmp.h>
-#include <gmpxx.h>
-using namespace std;
-using BigInt = mpz_class;
+#ifndef CARD_CPP
+#define CARD_CPP
+
+#include "Head.h"
 
 // カードを管理する列挙型
 enum CardType : int8_t {
@@ -45,3 +44,5 @@ class Card {
 		return CARD_NAME[(int)cardType];
 	}
 };
+
+#endif	// CARD_CPP
